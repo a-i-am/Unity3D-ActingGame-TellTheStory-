@@ -1,3 +1,4 @@
+using EightDirectionalSpriteSystem;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -16,22 +17,47 @@ public class PlayerController : MonoBehaviour
     Vector3 lastMoveDir;
     float verticalLookRotation;
     Transform cameraTransform;
+    float inputX;
+    float inputY;
+
 
     Animator anim;
     Rigidbody rb;
-
+    ActorBillboard actorBillboard;
 
     void Awake()
     {
         cameraTransform = Camera.main.transform;
         rb = GetComponent<Rigidbody>();
+        actorBillboard = GetComponent<ActorBillboard>();
     }
 
     void Update()
     {
+        if (DialogueManager.Instance.isDialogueActive)
+        {
+            // 대화 중일 때 이동을 잠급니다.
+            jumpForce = 0;
+            inputX = 0;
+            inputY = 0;
+
+            if(grounded) rb.constraints |= RigidbodyConstraints.FreezePosition;
+
+            //gameObject.GetComponent<ActorBillboard>().enabled = false;
+        }
+        else
+        {
+            //gameObject.GetComponent<ActorBillboard>().enabled = true;
+            // 대화가 끝났을 때 이동 제약을 해제합니다.
+            jumpForce = 220;
+            rb.constraints &= ~RigidbodyConstraints.FreezePosition;
+        }
+
+
+
         // Calculate movement:
-        float inputX = Input.GetAxisRaw("Horizontal");
-        float inputY = Input.GetAxisRaw("Vertical");
+        inputX = Input.GetAxisRaw("Horizontal");
+        inputY = Input.GetAxisRaw("Vertical");
 
         moveDir = new Vector3(inputX, 0, inputY).normalized;
 
@@ -57,7 +83,11 @@ public class PlayerController : MonoBehaviour
 
         // Grounded check
         Ray ray = new Ray(transform.position, Vector3.down);
-        if (Physics.Raycast(ray, out RaycastHit hit, 1 + .1f, groundedMask))
+
+        // 레이캐스트를 시각적으로 표시
+        Debug.DrawRay(ray.origin, ray.direction * 0.6f, Color.red);
+
+        if (Physics.Raycast(ray, out RaycastHit hit, 0.6f, groundedMask))
         {
             grounded = true;
         }

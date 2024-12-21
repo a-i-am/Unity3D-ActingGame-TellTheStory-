@@ -39,13 +39,16 @@ namespace EightDirectionalSpriteSystem
         private Transform myTransform;
         private SpriteRenderer spriteRenderer;
         private Vector3 actorForwardVector = Vector3.forward;
-
         private ActorAnimation currentAnimation = null;
         private int currentFrameIndex = 0;
         private float frameChangeDelay = 1.0f;
         private bool isPlaying = false;
         private bool isPaused = false;
         private int playDirection = 1;
+
+        public int animFrameDirection = 0;
+
+
 
         public void SetActorForwardVector(Vector3 actorForward)
         {
@@ -181,7 +184,9 @@ namespace EightDirectionalSpriteSystem
                 beforeRenderBillboardEvent();
 
             // 처리된 방향키 입력을 추가하여 8방향 + 대각선 계산
-            int animFrameDirection = 0;
+
+            if (!DialogueManager.Instance.isDialogueActive)
+                animFrameDirection = 0;
 
             if (currentAnimation.AnimType == ActorAnimation.AnimDirType.EightDirections)
             {
