@@ -1,0 +1,138 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbb0d33decf291d4ca946dd8fb7e9b08, type: 3}
+  m_Name: Test Song
+  m_EditorClassIdentifier: 
+  songName: Taste The Feeling
+  artist: "\uB9C8\uB9C8\uBB34(MAMAMOO)"
+  audioClip: {fileID: 8300000, guid: 73c23b2b76bab66408e41ad3262bf347, type: 3}
+  filePath: Assets/Data/test lyric.txt
+  lyrics:
+  - No one can stop
+  - No one can stop
+  - It feels good
+  - "\uC9C0\uAE08 \uB4E4\uC5B4\uBD10 \uC6B0\uB9AC\uB97C \uBD80\uB974\uB294 \uC18C\uB9AC"
+  - "\uB108\uC640 \uB098 \uD568\uAED8\uD558\uB294 \uC774 \uC21C\uAC04"
+  - "\uC74C \uC5EC\uAE30"
+  - "\uAE08\uBE5B \uD568\uC131\uACFC \uCF54\uCE74\uCF5C\uB77C\uAC00 \uD568\uAED8\uBA74"
+  - "\uB108\uC640 \uB098\uB294 \uD558\uB098\uAC00 \uB3FC"
+  - "\uC774 \uC21C\uAC04 feel forever"
+  - "\uD568\uAED8 \uB290\uAEF4\uBCFC\uB798"
+  - Feel together yeah
+  - No one can stop
+  - "\uBA48\uCD9C \uC218 \uC5C6\uB294 feeling"
+  - "\uB193\uCE58\uACE0 \uC2F6\uC9C0 \uC54A\uC740 \uC774 \uB9DB"
+  - No one can stop
+  - "\uC9DC\uB9BF\uD558\uAC8C \uB290\uAEF4\uBD10"
+  - "\uC6B0\uB9AC\uAC00 \uD568\uAED8\uD558\uB294 \uC774 \uB290\uB08C"
+  - It feels good
+  - "\uC7A1\uC740 \uB450 \uC190\uACFC \uCF54\uCE74\uCF5C\uB77C\uAC00 \uD568\uAED8\uBA74"
+  - "\uB0B4 \uAC00\uC2B4\uB3C4 \uB728\uAC70\uC6CC\uC838"
+  - "Yeah \uC6B0\uB9AC"
+  - "\uAC00\uC2B4\uC18D \uB053\uC5B4\uC624 \uB974\uB294 \uC5F4\uC815\uC744 \uBAA8\uC544"
+  - "\uD130\uC9C8\uB4EF\uC774 \uC18C\uB9AC\uCCD0 \uBCF4\uC790"
+  - "\uC774 \uC21C\uAC04 feel forever"
+  - "\uD568\uAED8 \uB290\uAEF4\uBCFC\uB798"
+  - Feel together yeah
+  - No one can stop
+  - "\uBA48\uCD9C \uC218 \uC5C6\uB294 feeling"
+  - "\uB193\uCE58\uACE0 \uC2F6\uC9C0 \uC54A\uC740 \uC774 \uB9DB"
+  - No one can stop
+  - "\uC9DC\uB9BF\uD558\uAC8C \uB290\uAEF4\uBD10"
+  - "\uC6B0\uB9AC\uAC00 \uD568\uAED8\uD558\uB294 \uC774 \uB290\uB08C"
+  - "\uBE5B\uB098\uB294 \uC774 \uC21C\uAC04\uC5D0"
+  - "\uB108\uC640\uB098 \uC6B0\uB9AC\uAC00"
+  - "\uAE08\uBE5B\uC758 \uD568\uC131\uC73C\uB85C \uD558\uB098\uAC00 \uB418\uACE0"
+  - "\uC774\uB807\uAC8C feel forever"
+  - "(\uC774\uB807\uAC8C forever)"
+  - "\uB108\uC640 \uB098 together"
+  - "(\uB108\uC640 \uB098 together)"
+  - "\uC6B0\uB9AC\uB294 forever"
+  - "(\uC6B0\uB9AC\uB294 forever)"
+  - "\uADF8\uB798 real together"
+  - It feels good
+  - "\uC6B0\uB9AC \uBAA8\uB450 \uD558\uB098\uAC00 \uB3FC"
+  - "\uAE08\uBE5B\uC758 \uC5F4\uC815 \uBAA8\uB450\uAC00 \uD658\uD638\uD574"
+  - Together as one
+  - Taste the feeling
+  - "\uD568\uAED8\uD558\uACE0 \uC2F6\uC5B4"
+  - Now and forever
+  - No one can stop
+  - "\uC9DC\uB9BF\uD558\uAC8C \uB290\uAEF4\uBD10"
+  - "\uC6B0\uB9AC\uAC00 \uD568\uAED8\uD558\uB294 \uC774 \uB290\uB08C"
+  - No one can stop
+  - "\uBA48\uCD9C \uC218 \uC5C6\uB294 feeling"
+  - "\uB193\uCE58\uACE0 \uC2F6\uC9C0 \uC54A\uC740 \uC774 \uB9DB"
+  - No one can stop
+  - "\uC9DC\uB9BF\uD558\uAC8C \uB290\uAEF4\uBD10"
+  - "\uC6B0\uB9AC\uAC00 \uD568\uAED8\uD558\uB294 \uC774 \uB290\uB08C"
+  - Taste the feeling
+  lyricsTimes:
+  - 0.26
+  - 4.4
+  - 12.44
+  - 15.55
+  - 18.96
+  - 22.82
+  - 25.12
+  - 28.39
+  - 31.72
+  - 33.57
+  - 34.83
+  - 36.52
+  - 38.53
+  - 40.9
+  - 45.91
+  - 48.07
+  - 50.44
+  - 56.44
+  - 58.63
+  - 61.7
+  - 65.57
+  - 67.98
+  - 71.13
+  - 74.52
+  - 76.5
+  - 77.78
+  - 79.27
+  - 81.31
+  - 83.67
+  - 88.69
+  - 90.84
+  - 93.19
+  - 98.78
+  - 102.11
+  - 104.42
+  - 108.21
+  - 109.84
+  - 110.88
+  - 111.93
+  - 113.08
+  - 114.3
+  - 115.61
+  - 120.74
+  - 121.73
+  - 122.98
+  - 125.36
+  - 126.44
+  - 127.68
+  - 128.58
+  - 129.7
+  - 131.12
+  - 133.57
+  - 138.32
+  - 140.72
+  - 143.12
+  - 146.2
+  - 146.55
+  - 152.59
+  - 156.4
