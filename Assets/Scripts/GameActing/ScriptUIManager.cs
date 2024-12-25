@@ -1,125 +1,96 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections;
 
 public class ScriptUIManager : MonoBehaviour
 {
     // UI 요소
-    public TextMeshProUGUI npcLineText;        // NPC 대사 텍스트
-    public TextMeshProUGUI playerLineText;     // 유저 대사 텍스트
-    public TextMeshProUGUI npcEmotionPromptText;  // NPC 감정 표현 지시문
-    public TextMeshProUGUI playerEmotionPromptText;  // 유저 감정 표현 지시문
-    public TextMeshProUGUI scoreDisplayText;   // 점수 텍스트
-    public Slider scoreProgressSlider;         // 점수 슬라이더
+    public TextMeshProUGUI dialogueText;
+    public TextMeshProUGUI emotionPromptText;
+    public TextMeshProUGUI scoreDisplayText;
+    public Slider scoreProgressSlider;
 
-    // 유저의 STT 대사 실시간 표시
-    public TextMeshProUGUI realTimePlayerSpeechText; // 실시간 STT 대사 텍스트
+    // 실시간 STT 대사 텍스트
+    public TextMeshProUGUI realTimePlayerSpeechText;
 
     // 대사 데이터
-    public LineData lineData;                  // 여러 문장을 포함한 대사 데이터
-    private int currentLineIndex = 0;           // 현재 문장의 인덱스
+    public ActingLineData actingLineData;
+    private int currentLineIndex = 0;
 
-    private float playerScore = 0; // 유저의 현재 점수
+    private float playerScore = 0;
 
-    // 실시간 STT 대사
-    private string realTimeUserSpeech = ""; // 실시간으로 유저가 입력한 대사
+    private string realTimeUserSpeech = "";
 
-    void Start()
-    {
-        LoadLineData();
-    }
+    //void Start()
+    //{
+    //    // 대사 타이밍 계산
+    //    //lineData.SetDialogueTimings();
+    //    StartCoroutine(DisplayDialogues());
+    //}
 
-    // 대사 데이터 로드 및 UI 설정
-    public void LoadLineData()
-    {
-        if (lineData != null && lineData.npcDialogues.Length > 0)
-        {
-            SetNPCLine(lineData.npcDialogues[currentLineIndex]);
-            SetPlayerLine(lineData.playerDialogues[currentLineIndex]);
-            SetNpcEmotionPrompt(lineData.npcEmotionPrompts[currentLineIndex]);
-            SetPlayerEmotionPrompt(lineData.playerEmotionPrompts[currentLineIndex]);
-            SetScore(0);
-        }
-    }
+    //// 대사를 시간에 맞춰 표시하는 코루틴
+    //IEnumerator DisplayDialogues()
+    //{
+    //    for (int i = 0; i < actingLineData.npcActingLines.Length; i++)
+    //    {
+    //        // NPC 대사 표시
+    //        UpdateDialogue(actingLineData.npcActingLines[i], actingLineData.npcEmotionPrompts[i]);
 
-    // NPC 대사를 업데이트하는 함수
-    public void SetNPCLine(string line)
-    {
-        npcLineText.text = line;
-    }
+    //        // NPC 대사 표시 시간 대기
+    //        yield return new WaitForSeconds(actingLineData.dialogueStartTimes[i]);
 
-    // 유저 대사를 업데이트하는 함수
-    public void SetPlayerLine(string playerSpeech)
-    {
-        playerLineText.text = $"You said: {playerSpeech}";
-    }
+    //        // 플레이어 대사 표시 (지정된 대사)
+    //        UpdateDialogue(actingLineData.playerActingLines[i], actingLineData.playerEmotionPrompts[i]);
 
-    // NPC 감정 표현 지시문을 업데이트하는 함수
-    public void SetNpcEmotionPrompt(string prompt)
-    {
-        npcEmotionPromptText.text = prompt;
-    }
+    //        // 플레이어 STT 대사 수집 시간 대기
+    //        yield return new WaitForSeconds(actingLineData.dialogueEndTimes[i] - actingLineData.dialogueStartTimes[i]);
 
-    // 유저 감정 표현 지시문을 업데이트하는 함수
-    public void SetPlayerEmotionPrompt(string prompt)
-    {
-        playerEmotionPromptText.text = prompt;
-    }
+    //        // 대사 종료 후 잠시 대기
+    //        yield return new WaitForSeconds(1f);
+    //    }
+    //}
 
-    // 점수를 업데이트하는 함수
-    public void SetScore(float score)
-    {
-        playerScore = score;
-        scoreDisplayText.text = $"Score: {playerScore:F1}";
-        scoreProgressSlider.value = playerScore / 100f; // 슬라이더 값은 0~1로 정규화
-    }
+    //// 대사 및 감정 프롬프트 업데이트
+    //public void UpdateDialogue(string dialogue, string emotionPrompt)
+    //{
+    //    dialogueText.text = dialogue;
+    //    emotionPromptText.text = emotionPrompt;
+    //}
 
-    // 유저 대사 분석 결과와 점수를 실시간으로 업데이트
-    public void AnalyzePlayerSpeech(string playerSpeech)
-    {
-        // 예시: 점수 계산
-        float pronunciationScore = Random.Range(50, 100); // 가상의 발음 점수
-        float toneScore = Random.Range(50, 100);          // 가상의 톤 점수
-        float speedScore = Random.Range(50, 100);         // 가상의 속도 점수
+    //// 실시간 STT 결과 받아오기
+    //public void OnSTTRecognized(string sttResult)
+    //{
+    //    realTimeUserSpeech = sttResult;
+    //    UpdateRealTimeSpeechDisplay(realTimeUserSpeech);
+    //    AnalyzePlayerSpeech(realTimeUserSpeech);
+    //}
 
-        float totalScore = (pronunciationScore * 0.4f) +
-                           (toneScore * 0.3f) +
-                           (speedScore * 0.3f);
+    //// 실시간 STT 대사 UI 업데이트
+    //public void UpdateRealTimeSpeechDisplay(string speech)
+    //{
+    //    realTimePlayerSpeechText.text = $"{speech}";
+    //}
 
-        // UI 업데이트
-        SetPlayerLine(playerSpeech);
-        SetScore(totalScore);
-    }
+    //// 유저 대사 분석 (점수 계산)
+    //public void AnalyzePlayerSpeech(string playerSpeech)
+    //{
+    //    float pronunciationScore = Random.Range(50, 100); // 발음 점수 예시
+    //    float toneScore = Random.Range(50, 100);          // 톤 점수 예시
+    //    float speedScore = Random.Range(50, 100);         // 속도 점수 예시
 
-    // STT 대사 받아오기 (실시간 대사 처리)
-    public void OnSTTRecognized(string sttResult)
-    {
-        realTimeUserSpeech = sttResult;
-        UpdateRealTimeSpeechDisplay(realTimeUserSpeech);
-        AnalyzePlayerSpeech(realTimeUserSpeech);
-    }
+    //    float totalScore = (pronunciationScore * 0.4f) +
+    //                       (toneScore * 0.3f) +
+    //                       (speedScore * 0.3f);
 
-    // 실시간으로 유저의 STT 대사를 UI에 표시
-    public void UpdateRealTimeSpeechDisplay(string speech)
-    {
-        realTimePlayerSpeechText.text = $"Your Speech: {speech}";
-    }
+    //    SetScore(totalScore);
+    //}
 
-    // 대사 진행 후 다음 문장으로 이동
-    public void NextLine()
-    {
-        if (currentLineIndex < lineData.npcDialogues.Length - 1)
-        {
-            currentLineIndex++;
-            LoadLineData();
-        }
-    }
-
-    // 녹음 시작 및 STT 처리
-    public void StartRecording()
-    {
-        // 예시: STT 통합을 위한 녹음 처리
-        string mockPlayerSpeech = lineData.playerDialogues[currentLineIndex]; // 테스트용 대사
-        OnSTTRecognized(mockPlayerSpeech); // STT 결과를 바로 처리
-    }
+    //// 점수 업데이트
+    //public void SetScore(float score)
+    //{
+    //    playerScore = score;
+    //    scoreDisplayText.text = $"Score: {playerScore:F1}";
+    //    scoreProgressSlider.value = playerScore / 100f; // 0 ~ 1 슬라이더
+    //}
 }
