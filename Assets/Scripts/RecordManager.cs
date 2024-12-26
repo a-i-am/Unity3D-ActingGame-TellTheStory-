@@ -6,9 +6,9 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 [RequireComponent(typeof(AudioSource), typeof(MeshFilter), typeof(MeshRenderer))]
-public class SttWaveformManager : MonoBehaviour
+public class RecordManager : MonoBehaviour
 {
-    public static SttWaveformManager instance;
+    public static RecordManager instance;
 
     [Header("STT Settings")]
     private const string CLIENT_ID = "fyyr2a8p6n";
@@ -33,6 +33,7 @@ public class SttWaveformManager : MonoBehaviour
     private float stepSize;
     private float recordingDuration;
     private float minY = 0.03f;
+    public byte[] currentWavData;
 
     private void Awake()
     {
@@ -112,8 +113,10 @@ public class SttWaveformManager : MonoBehaviour
         StopCoroutine(arrowCoroutine);
         MoveArrow(1.0f);
 
-        byte[] wavData = ConvertAudioClipToWav(recordedClip);
-        StartCoroutine(SendSpeechRecognitionRequest(wavData));
+        currentWavData = ConvertAudioClipToWav(recordedClip);
+        //뷁
+        DataManager.instance.SaveRecordedAudio(currentWavData, "Test.wav");
+        yield return StartCoroutine(SendSpeechRecognitionRequest(currentWavData));
     }
 
     private IEnumerator SendSpeechRecognitionRequest(byte[] audioData)
