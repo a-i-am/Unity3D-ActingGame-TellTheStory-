@@ -28,17 +28,10 @@ public class ActingLineSynchronizer : MonoBehaviour
     public void SyncActingLinesWithSTT()
     {
         // 대사와 행동지문 동기화 로직
-<<<<<<< HEAD
-        //string npcActingLine = actingLineData.npcActingLines[currentActingLineIndex];
-        //string playerActingLine = actingLineData.playerActingLines[currentActingLineIndex];
-        //string npcPrompts = actingLineData.npcPrompts[currentActingLineIndex];
-        //string playerPrompts = actingLineData.playerPrompts[currentActingLineIndex];
-=======
         string npcActingLine = actingLineData.npcActingLines[currentActingLineIndex].dialogue;
         string playerActingLine = actingLineData.playerActingLines[currentActingLineIndex];
         string npcPrompts = actingLineData.npcPrompts[currentActingLineIndex];
         string playerPrompts = actingLineData.playerPrompts[currentActingLineIndex];
->>>>>>> a0b00ea (오디오 클립 세팅)
     }
 
     // STT 결과를 처리하는 함수

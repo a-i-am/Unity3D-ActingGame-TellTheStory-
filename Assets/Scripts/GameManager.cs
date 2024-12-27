@@ -5,14 +5,11 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-<<<<<<< HEAD:Assets/Scripts/GameManager.cs
     public int currentNpc;
     public int currentDialogueIndex;
-=======
     public int currentNPC;
     public int currentAct;//NPC와 Act는 게임 씬에서 들어갔을 때 어떤 데이터를 불러올지 결정한다.
     public int[] npcCurrentLine = new int[4];//각 npc의 이야기 진행 상황. 세이브, 로드 해야함.
->>>>>>> a0b00ea (오디오 클립 세팅):Assets/Scripts/RhythmGame/GameManager.cs
     void Awake()
     {
         if (Instance == null)

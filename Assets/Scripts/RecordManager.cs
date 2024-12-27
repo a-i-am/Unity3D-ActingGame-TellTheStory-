@@ -116,14 +116,11 @@ public class RecordManager : MonoBehaviour
         StopCoroutine(arrowCoroutine);
         MoveArrow(1.0f);
 
-<<<<<<< HEAD
-        currentWavData = ConvertAudioClipToWav(recordedClip);
+        byte[] currentWavData = ConvertAudioClipToWav(recordedClip);
         yield return StartCoroutine(SendSpeechRecognitionRequest(currentWavData));
-=======
         byte[] wavData = ConvertAudioClipToWav(recordedClip);
         DataManager.instance.SaveRecordedAudio(wavData, $"NPC{gameManager.currentNPC}/Act{gameManager.currentAct}", $"Line{gameManager.npcCurrentLine[gameManager.currentNPC]}.wav");
         yield return StartCoroutine(SendSpeechRecognitionRequest(wavData));
->>>>>>> a0b00ea (오디오 클립 세팅)
     }
 
     private IEnumerator SendSpeechRecognitionRequest(byte[] audioData)

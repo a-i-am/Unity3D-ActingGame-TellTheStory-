@@ -1,4 +1,3 @@
-using System.Linq;
 using UnityEngine;
 
 public class ActingLineTriggerManager : MonoBehaviour
@@ -66,99 +65,52 @@ public class ActingLineTriggerManager : MonoBehaviour
             return;
         }
 
-        // 인덱스 범위 검증
-        //if (currentTurnIndex >= actingLineData.npcActingLines.Count ||
-        //    currentTurnIndex >= actingLineData.playerActingLines.Count)
-        //{
-        //    Debug.LogError($"currentTurnIndex({currentTurnIndex})가 대사 데이터 범위를 초과했습니다!");
-        //    return;
-        //}
-
-        foreach (string line in actingLineData.allActingLines)
+        string currentLine = actingLineData.allActingLines[currentTurnIndex]; // 현재 대사 가져오기
+        string[] parts = currentLine.Split(':');
+        if (parts.Length < 2)
         {
-<<<<<<< HEAD
-            string[] parts = line.Split(':');
-            if (parts.Length < 2)
-            {
-                Debug.LogWarning($"잘못된 형식의 라인 발견: {line}");
-                continue;
-            }
-
-            string role = parts[0].Trim();  // NPC 또는 Player
-            string dialogue = parts[1].Trim();  // 대사
-
-            // 지시문과 대사를 구분
-            string linePrompts = null;
-            int promptsStartIndex = dialogue.IndexOf('('); // '('의 위치
-            int promptsEndIndex = dialogue.IndexOf(')');   // ')'의 위치
-
-            if (promptsStartIndex != -1 && promptsEndIndex != -1 && promptsEndIndex > promptsStartIndex)
-            {
-                // 지시문 추출: '('부터 ')'까지의 내용 포함
-                linePrompts = dialogue.Substring(promptsStartIndex, promptsEndIndex - promptsStartIndex + 1).Trim();
-
-                // 대사 내용 갱신: '(' 이전과 ')' 이후를 결합
-                string beforePrompt = dialogue.Substring(0, promptsStartIndex).Trim();
-                string afterPrompt = dialogue.Substring(promptsEndIndex + 1).Trim();
-                dialogue = string.IsNullOrEmpty(beforePrompt) ? afterPrompt : $"{beforePrompt} {afterPrompt}".Trim();
-            }
-
-            // 역할에 따른 순열 저장
-            if (role == Role.Player)
-            {
-                actingLineData.npcActingLines.Add(dialogue);
-                actingLineData.npcPrompts.Add(linePrompts ?? "");  // 지시문이 없는 경우 빈 문자열
-            }
-            else if (role == "Player")
-            {
-                actingLineData.playerActingLines.Add(dialogue);
-                actingLineData.playerPrompts.Add(linePrompts ?? "");  // 지시문이 없는 경우 빈 문자열
-            }
-            else
-            {
-                Debug.LogWarning($"알 수 없는 역할: {role} - {dialogue}");
-            }
-=======
-            line = actingLineData.npcActingLines[currentTurnIndex].dialogue;
-            prompts = actingLineData.npcPrompts[currentTurnIndex];
-        }
-        else if (currentRole == Role.Player)
-        {
-            line = actingLineData.playerActingLines[currentTurnIndex];
-            prompts = actingLineData.playerPrompts[currentTurnIndex];
->>>>>>> a0b00ea (오디오 클립 세팅)
+            Debug.LogWarning($"잘못된 형식의 라인 발견: {currentLine}");
+            return;
         }
 
+        string role = parts[0].Trim();  // NPC 또는 Player 역할
+        string line = parts[1].Trim();  // 대사
 
+        // 지시문과 대사를 구분
+        string linePrompts = null;
+        int promptsStartIndex = line.IndexOf('('); // '('의 위치
+        int promptsEndIndex = line.IndexOf(')');   // ')'의 위치
 
+        if (promptsStartIndex != -1 && promptsEndIndex != -1 && promptsEndIndex > promptsStartIndex)
+        {
+            // 지시문 추출: '('부터 ')'까지의 내용 포함
+            linePrompts = line.Substring(promptsStartIndex, promptsEndIndex - promptsStartIndex + 1).Trim();
 
-        //// NPC 또는 Player의 대사를 가져와 UI에 업데이트
-        //if (currentRole == Role.NPC)
-        //{
-        //    line = actingLineData.npcActingLines[currentTurnIndex];
-        //    prompts = actingLineData.npcPrompts[currentTurnIndex];
-        //}
-        //else if (currentRole == Role.Player)
-        //{
-        //    line = actingLineData.playerActingLines[currentTurnIndex];
-        //    prompts = actingLineData.playerPrompts[currentTurnIndex];
-        //}
+            // 대사 내용 갱신: '(' 이전과 ')' 이후를 결합
+            string beforePrompt = line.Substring(0, promptsStartIndex).Trim();
+            string afterPrompt = line.Substring(promptsEndIndex + 1).Trim();
+            line = string.IsNullOrEmpty(beforePrompt) ? afterPrompt : $"{beforePrompt} {afterPrompt}".Trim();
+        }
 
-        //actingLineUI.UpdateUI(line, prompts);
+        // 역할에 따라 대사와 지시문 저장
+        if (role.Equals("NPC", System.StringComparison.OrdinalIgnoreCase))
+        {
+            actingLineData.npcActingLines.Add(line);
+            actingLineData.npcPrompts.Add(linePrompts ?? "");  // 지시문이 없는 경우 빈 문자열
+        }
+        else if (role.Equals("Player", System.StringComparison.OrdinalIgnoreCase))
+        {
+            actingLineData.playerActingLines.Add(line);
+            actingLineData.playerPrompts.Add(linePrompts ?? "");  // 지시문이 없는 경우 빈 문자열
+        }
+        else
+        {
+            Debug.LogWarning($"알 수 없는 역할: {role} - {line}");
+        }
+
+        // UI 갱신
+        actingLineUI.UpdateUI(line, linePrompts);
     }
-
-<<<<<<< HEAD
-
-
-=======
-    public void HandlePlayerInput(string input)
-    {
-        // STT 결과 처리
-        //sttManager.ProcessInput(input);
->>>>>>> a0b00ea (오디오 클립 세팅)
-
-
-
 
 
     // STT 결과를 처리하여 대사 진행

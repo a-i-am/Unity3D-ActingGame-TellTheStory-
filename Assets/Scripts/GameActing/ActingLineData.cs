@@ -1,29 +1,15 @@
 using UnityEngine;
 using System.IO;
-<<<<<<< HEAD
 using System.Collections.Generic;
-=======
 using System;
-using System.Collections.Generic;
 using System.Linq;
->>>>>>> a0b00ea (오디오 클립 세팅)
 
 [CreateAssetMenu(fileName = "ActingLineData", menuName = "Acting/ActingLineData", order = 1)]
 public class ActingLineData : ScriptableObject
 {
-<<<<<<< HEAD
-=======
     // NPC 대사
-    public LineSet[] npcActingLines;
-
     // 유저가 해야 할 대사
-    public string[] playerActingLines;
-
     // NPC와 유저 각각의 행동 지시문
-    public string[] npcPrompts;
-    public string[] playerPrompts;
-
->>>>>>> a0b00ea (오디오 클립 세팅)
     // 대사 문서 파일 경로
     public string actingLineFilePath;
     // 읽어온 파일 원본
@@ -37,10 +23,8 @@ public class ActingLineData : ScriptableObject
     public List<string> playerPrompts = new List<string>();
 
     // NPC
-    public List<string> npcActingLines = new List<string>();
+    public List<LineSet> npcActingLines = new();
     public List<string> npcPrompts = new List<string>();
-
-
 
     // 대사 파일을 파싱하여 데이터를 설정하는 함수
     public void ParseActingLineFile()
@@ -69,20 +53,9 @@ public class ActingLineData : ScriptableObject
         UseAllLine();
     }
 
-<<<<<<< HEAD
     private void UseAllLine()
     {
         foreach (string line in rawData)
-=======
-        // NPC 대사와 Player 대사를 담을 리스트
-        List<string> npcActingLinesList = new List<string>();
-        List<string> playerActingLinesList = new List<string>();
-        List<string> playerPromptsList = new List<string>();
-        List<string> npcPromptsList = new List<string>();
-        npcPromptsList = new List<string>();
-        playerPromptsList = new List<string>();
-        foreach (var line in rawData)
->>>>>>> a0b00ea (오디오 클립 세팅)
         {
             // 빈 줄은 무시
             if (string.IsNullOrWhiteSpace(line))
@@ -90,25 +63,6 @@ public class ActingLineData : ScriptableObject
 
             allActingLines.Add(line);
         }
-<<<<<<< HEAD
-
-
-=======
-        npcPrompts = npcPromptsList.ToArray();
-        playerPrompts = playerPromptsList.ToArray();
-
-        npcActingLines = new LineSet[npcActingLinesList.Count];
-        for (int i = 0; i < npcActingLines.Length; i++)
-        {
-            AudioClip npcClip = null;
-            if (i <= npcClips.Length - 1)
-            {
-                npcClip = npcClips[i];
-            }
-            npcActingLines[i] = new LineSet(npcActingLinesList[i], npcClip);
-        }
-        playerActingLines = playerActingLinesList.ToArray();
->>>>>>> a0b00ea (오디오 클립 세팅)
     }
 
 
