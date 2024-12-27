@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scripts/GameManager.cs.meta
 guid: 39bad271211c7a34eabe31beee737ec6
+========
+guid: be59812bfed93da488d24b8c81a6af72
+>>>>>>>> JongHyeon:Assets/Scripts/GameActing/StoryInfoData.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2

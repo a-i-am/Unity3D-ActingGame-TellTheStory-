@@ -7,12 +7,13 @@ public class ActingLineUI : MonoBehaviour
     public TextMeshProUGUI actingLineText;  // 대사 UI 텍스트
     public TextMeshProUGUI promptText;     // 행동 지시문 텍스트
     public TextMeshProUGUI sttText;
-    public TextMeshProUGUI timeMaxText;
+    public TextMeshProUGUI remainTimeText;
 
     public GameObject choicePanel;          // 선택지 UI 패널
     public TextMeshProUGUI choice1Text;     // 선택지 1 텍스트
     public TextMeshProUGUI choice2Text;     // 선택지 2 텍스트
 
+    public GameObject timerPanel;           //타이머 UI 패널
     // 대사와 감정 지시문을 UI에 업데이트하는 함수
     public void UpdateUI(string line, string linePrompts)
     {
@@ -53,8 +54,23 @@ public class ActingLineUI : MonoBehaviour
 
     public void UpdateTimerUI(float time_current)
     {
-        if (timeMaxText != null)
-            timeMaxText.text = $"{time_current:N1}";
+        remainTimeText.text = $"{time_current:N0}";
     }
-
+    public void SetActiveByRole(Role currentRole)
+    {
+        choicePanel.SetActive(false);
+        switch (currentRole)
+        {
+            case Role.NPC:
+                timerPanel.SetActive(false);
+                promptText.gameObject.SetActive(false);
+                sttText.gameObject.SetActive(false);
+                break;
+            case Role.Player:
+                sttText.gameObject.SetActive(true);
+                sttText.text = string.Empty;
+                promptText.gameObject.SetActive(true);
+                break;
+        }
+    }
 }
