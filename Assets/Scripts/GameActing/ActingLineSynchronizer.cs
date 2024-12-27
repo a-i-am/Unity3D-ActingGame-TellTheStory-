@@ -20,24 +20,24 @@ public class ActingLineSynchronizer : MonoBehaviour
         }
 
         // 대사와 행동지문 동기화 로직
-        SyncActingLinesWithSTT();
+        //SyncActingLinesWithSTT();
     }
 
-    // 대사와 행동지문 동기화
+    //// 대사와 행동지문 동기화
     public void SyncActingLinesWithSTT()
     {
         // 대사와 행동지문 동기화 로직
-        string npcActingLine = actingLineData.npcActingLines[currentActingLineIndex];
-        string playerActingLine = actingLineData.playerActingLines[currentActingLineIndex];
-        string npcPrompts = actingLineData.npcPrompts[currentActingLineIndex];
-        string playerPrompts = actingLineData.playerPrompts[currentActingLineIndex];
+        //string npcActingLine = actingLineData.npcActingLines[currentActingLineIndex];
+        //string playerActingLine = actingLineData.playerActingLines[currentActingLineIndex];
+        //string npcPrompts = actingLineData.npcPrompts[currentActingLineIndex];
+        //string playerPrompts = actingLineData.playerPrompts[currentActingLineIndex];
     }
 
     // STT 결과를 처리하는 함수
     public void OnSTTRecognized(string sttResult)
     {
         // STT 결과에 따른 대사 동기화 처리
-        string currentPlayerActingLine = actingLineData.playerActingLines[currentActingLineIndex];
+        //string currentPlayerActingLine = actingLineData.playerActingLines[currentActingLineIndex];
     }
 }
 
