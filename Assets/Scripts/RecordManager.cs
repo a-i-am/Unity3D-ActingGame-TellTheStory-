@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
 
-[RequireComponent(typeof(AudioSource), typeof(MeshFilter), typeof(MeshRenderer))]
+[RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class RecordManager : MonoBehaviour
 {
     public static RecordManager instance;
@@ -17,6 +17,7 @@ public class RecordManager : MonoBehaviour
     private AudioClip recordedClip;
 
     public Action<string> onSttResult;//onSttresult += MyMthod
+    public Action<AudioClip> onClipResult;
 
     [Header("Waveform Settings")]
     public float maxAmplitude = 10f;
@@ -24,7 +25,6 @@ public class RecordManager : MonoBehaviour
     public int vertexCount = 400;
     public GameObject arrow;
 
-    private AudioSource audioSource;
     private Mesh mesh;
     private MeshFilter meshFilter;
     private Vector3[] vertices;
@@ -35,6 +35,8 @@ public class RecordManager : MonoBehaviour
     private float minY = 0.03f;
 
     private GameManager gameManager;
+    private bool stopFlag;
+
     private void Awake()
     {
         if (instance)
@@ -47,7 +49,6 @@ public class RecordManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
 
-        audioSource = GetComponent<AudioSource>();
         meshFilter = GetComponent<MeshFilter>();
         InitWaveformMesh();
     }
@@ -90,6 +91,7 @@ public class RecordManager : MonoBehaviour
 
     public void StartRecording(float duration)
     {
+        stopFlag = false;
         InitWaveformMesh();
         recordingDuration = duration;
         StopAllCoroutines();
@@ -105,7 +107,7 @@ public class RecordManager : MonoBehaviour
         arrowCoroutine = StartCoroutine(UpdateArrowPosition());
 
         float startTime = Time.time;
-        while (Time.time - startTime < duration)
+        while (Time.time - startTime < duration && !stopFlag)
         {
             float elapsedTime = Time.time - startTime;
             ProcessWaveformSamples(elapsedTime);
@@ -118,9 +120,8 @@ public class RecordManager : MonoBehaviour
 
         byte[] currentWavData = ConvertAudioClipToWav(recordedClip);
         yield return StartCoroutine(SendSpeechRecognitionRequest(currentWavData));
-        byte[] wavData = ConvertAudioClipToWav(recordedClip);
-        DataManager.instance.SaveRecordedAudio(wavData, $"NPC{gameManager.currentNPC}/Act{gameManager.currentAct}", $"Line{gameManager.npcCurrentLine[gameManager.currentNPC]}.wav");
-        yield return StartCoroutine(SendSpeechRecognitionRequest(wavData));
+        onClipResult?.Invoke(recordedClip);
+        DataManager.instance.SaveRecordedAudio(currentWavData, $"NPC{gameManager.currentNPC}/Act{gameManager.currentAct}", $"Line{gameManager.npcCurrentLine[gameManager.currentNPC]+1}.wav");
     }
 
     private IEnumerator SendSpeechRecognitionRequest(byte[] audioData)
@@ -151,7 +152,33 @@ public class RecordManager : MonoBehaviour
             Debug.LogError("STT 실패: " + request.error);
         }
     }
+    public void StopRecording()
+    {
+        stopFlag = true;
 
+        // 현재까지의 녹음 데이터를 자르기
+        int micPosition = Microphone.GetPosition(null); // 현재 마이크 위치
+        if (micPosition > 0 && recordedClip != null)
+        {
+            recordedClip = TrimAudioClip(recordedClip, micPosition);
+        }
+    }
+
+    private AudioClip TrimAudioClip(AudioClip clip, int length)
+    {
+        int channels = clip.channels;
+        int sampleRate = clip.frequency;
+
+        // 샘플 데이터를 가져오기
+        float[] samples = new float[length * channels];
+        clip.GetData(samples, 0);
+
+        // 새로운 AudioClip 생성
+        AudioClip trimmedClip = AudioClip.Create(clip.name + "_Trimmed", length, channels, sampleRate, false);
+        trimmedClip.SetData(samples, 0);
+
+        return trimmedClip;
+    }
 
 
     private void ProcessWaveformSamples(float elapsedTime)

@@ -20,8 +20,6 @@ public class ActingLineSynchronizer : MonoBehaviour
             Debug.LogError("ActingLineData is not assigned!");
         }
 
-        // 대사와 행동지문 동기화 로직
-        //SyncActingLinesWithSTT();
     }
 
     //// 대사와 행동지문 동기화

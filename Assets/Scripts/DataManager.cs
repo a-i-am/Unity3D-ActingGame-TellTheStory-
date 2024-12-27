@@ -125,9 +125,17 @@ public class DataManager : MonoBehaviour
     public void SaveCurrentData()
     {
         int npcId = GameManager.Instance.currentNPC;
-        int npcLine = GameManager.Instance.npcCurrentLine[npcId];
 
-        PlayerPrefs.SetInt($"NPC{npcId}", npcLine);
+        Role currentRole = ActingLineTriggerManager.instance.currentRole;
+        int roleIndex = currentRole == Role.Player ? 0 : 1;
+
+        int npcLine = roleIndex == 0 ? ActingLineTriggerManager.instance.playerLineIndex : ActingLineTriggerManager.instance.npcLineIndex;
+
+        GameManager.Instance.npcCurrentLine[npcId] = npcLine;
+        GameManager.Instance.npcCurrentRole[npcId] = roleIndex;
+
+        PlayerPrefs.SetInt($"NPC{npcId}_Line", npcLine);
+        PlayerPrefs.SetInt($"NPC{npcId}_Role", roleIndex);
         PlayerPrefs.Save();
 
         Debug.Log($"[SaveCurrentData] NPC ID: {npcId}, Saved Line: {npcLine}");
@@ -135,10 +143,11 @@ public class DataManager : MonoBehaviour
 
     public void LoadGameData()
     {
-        for (int i = 0; i < GameManager.Instance.npcCurrentLine.Length; i++)
+        for (int i = 0; i < 4; i++)
         {
-            GameManager.Instance.npcCurrentLine[i] = PlayerPrefs.GetInt($"NPC{i}", 0); // 기본값을 0으로 설정
-            Debug.Log($"[LoadGameData] NPC ID: {i}, Loaded Line: {GameManager.Instance.npcCurrentLine[i]}");
+            GameManager.Instance.npcCurrentLine[i] = PlayerPrefs.GetInt($"NPC{i}_Line", 0);
+            GameManager.Instance.npcCurrentRole[i] = PlayerPrefs.GetInt($"NPC{i}_Role", 0);
+            Debug.Log($"[LoadGameData] NPC : {i}, Loaded Line : {GameManager.Instance.npcCurrentLine[i]}, Loaded Role: {GameManager.Instance.npcCurrentRole[i]}");
         }
     }
     public void NewGame()
