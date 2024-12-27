@@ -1386,6 +1386,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c763b5efd755dd14ab4208a4597e92c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  recordManager: {fileID: 1734358864}
+  actingLineData: {fileID: 11400000, guid: 57db84e72197c7244b73f1d3247fb0eb, type: 2}
+  actingLineUI: {fileID: 1133481872}
+  sttManager: {fileID: 1734358860}
+  currentTurnIndex: 0
+  time_Max: 3
 --- !u!114 &1133481874
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1969,6 +1975,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c0d21307a36ffd4b912c70c95bfe824, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  recordManager: {fileID: 0}
+  actingLineTriggerManager: {fileID: 0}
 --- !u!23 &1734358861
 MeshRenderer:
   m_ObjectHideFlags: 0

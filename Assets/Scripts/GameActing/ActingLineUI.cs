@@ -14,10 +14,10 @@ public class ActingLineUI : MonoBehaviour
     public TextMeshProUGUI choice2Text;     // 선택지 2 텍스트
 
     // 대사와 감정 지시문을 UI에 업데이트하는 함수
-    public void UpdateUI(string line, string prompts)
+    public void UpdateUI(string line, string linePrompts)
     {
         actingLineText.text = line;
-        promptText.text = prompts;
+        promptText.text = linePrompts;
     }
 
     // STT 결과를 UI에 타이핑 효과로 업데이트하는 함수

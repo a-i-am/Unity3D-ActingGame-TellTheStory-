@@ -82,7 +82,4 @@ public class DialogueManager : MonoBehaviour
         isDialogueActive = false;
         animator.Play("Hide");
     }
-
-
-
 }

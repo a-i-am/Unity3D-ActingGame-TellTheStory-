@@ -35,14 +35,13 @@ public class DialogueTrigger : MonoBehaviour
 
     void Update()
     {
-
-            Collider[] colliderArray = Physics.OverlapSphere(transform.position, interactRange);
-            foreach (Collider collider in colliderArray)
+        Collider[] colliderArray = Physics.OverlapSphere(transform.position, interactRange);
+        foreach (Collider collider in colliderArray)
+        {
+            if (!DialogueManager.Instance.isDialogueActive && Input.GetKeyDown(KeyCode.Z) && collider.CompareTag("Player"))
             {
-                if (Input.GetKeyDown(KeyCode.Z) && collider.CompareTag("Player"))
-                {
-                    TriggerDialogue();
-                }
+                TriggerDialogue();
+            }
         }
     }
 
