@@ -7,7 +7,7 @@ public class ActingLineSynchronizer : MonoBehaviour
     public ActingLineData actingLineData;  // ActingLineData 참조
     private int currentActingLineIndex = 0;  // 대사 인덱스
 
-    void Start()
+    public void InitData()
     {
         if (actingLineData != null)
         {

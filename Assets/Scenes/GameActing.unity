@@ -123,6 +123,50 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &157560126
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 157560128}
+  - component: {fileID: 157560127}
+  m_Layer: 0
+  m_Name: DataManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &157560127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 157560126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8da703f056359824cb2fbc03c0f16a67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &157560128
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 157560126}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 13.51847, y: -10.619733, z: 8.686271}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &160391366
 GameObject:
   m_ObjectHideFlags: 0
@@ -1369,8 +1413,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actingLineText: {fileID: 942292919}
   promptText: {fileID: 1564039319}
-  sttText: {fileID: 289465710}
-  timeMaxText: {fileID: 2043037354}
+  sttText: {fileID: 0}
+  timeMaxText: {fileID: 0}
   choicePanel: {fileID: 1835500130}
   choice1Text: {fileID: 1902084697}
   choice2Text: {fileID: 730731859}
@@ -1386,6 +1430,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c763b5efd755dd14ab4208a4597e92c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  recordManager: {fileID: 0}
+  actingLineData: {fileID: 11400000, guid: 57db84e72197c7244b73f1d3247fb0eb, type: 2}
+  actingLineUI: {fileID: 1133481872}
+  sttManager: {fileID: 1734358860}
+  synchronizer: {fileID: 1133481874}
+  currentTurnIndex: 0
+  time_Max: 3
 --- !u!114 &1133481874
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1835,12 +1886,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1599572827}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 640aba1904de3544db5c94aa7b1eb2ac, type: 3}
+  m_Script: {fileID: 11500000, guid: 39bad271211c7a34eabe31beee737ec6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   currentNpc: 0
-  currentAct: 1
-  currentLine: 0
+  currentDialogueIndex: 0
+  currentNPC: 0
+  currentAct: 0
+  npcCurrentLine: 00000000000000000000000000000000
 --- !u!1 &1660625472
 GameObject:
   m_ObjectHideFlags: 0
@@ -2016,6 +2069,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c0d21307a36ffd4b912c70c95bfe824, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  recordManager: {fileID: 0}
+  actingLineTriggerManager: {fileID: 0}
 --- !u!23 &1734358861
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2178,7 +2233,6 @@ MonoBehaviour:
   width: 10
   vertexCount: 400
   arrow: {fileID: 0}
-  currentWavData: 
 --- !u!1 &1835500130
 GameObject:
   m_ObjectHideFlags: 0
@@ -2950,3 +3004,4 @@ SceneRoots:
   - {fileID: 1004735598}
   - {fileID: 160391370}
   - {fileID: 1599572828}
+  - {fileID: 157560128}

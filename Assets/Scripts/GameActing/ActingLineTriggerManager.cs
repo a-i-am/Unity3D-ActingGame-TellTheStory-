@@ -6,6 +6,7 @@ public class ActingLineTriggerManager : MonoBehaviour
     public ActingLineData actingLineData;  // ActingLineData 참조
     public ActingLineUI actingLineUI;      // UI 관리
     public STTManager sttManager;          // STT 관리 (STTManager로 대체)
+    public ActingLineSynchronizer synchronizer;
     private Role currentRole;   // 현재 턴의 역할 (NPC/Player)
     public int currentTurnIndex = 0;       // 현재 대사 인덱스
 
@@ -15,6 +16,7 @@ public class ActingLineTriggerManager : MonoBehaviour
 
     void Start()
     {
+        synchronizer.InitData();
         if (actingLineData == null)
         {
             Debug.LogError("ActingLineData가 할당되지 않았습니다!");
