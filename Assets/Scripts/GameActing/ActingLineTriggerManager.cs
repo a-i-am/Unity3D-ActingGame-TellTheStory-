@@ -1,152 +1,208 @@
+using NUnit.Framework.Internal;
+using System;
+using System.Collections;
 using UnityEngine;
 
 public class ActingLineTriggerManager : MonoBehaviour
 {
-    public RecordManager recordManager;
-    public ActingLineData actingLineData;  // ActingLineData 참조
-    public ActingLineUI actingLineUI;      // UI 관리
-    public STTManager sttManager;          // STT 관리 (STTManager로 대체)
-    private Role currentRole;   // 현재 턴의 역할 (NPC/Player)
-    public int currentTurnIndex = 0;       // 현재 대사 인덱스
+    public static ActingLineTriggerManager instance;
 
-    public float time_Max = 3f;            // 타이머 최대 시간
-    private float time_current;            // 현재 타이머 시간
-    private bool isWaiting = false;
+    [SerializeField] RecordManager recordManager;
+    [SerializeField] ScoreManager scoreManager;
+    [SerializeField] ActingLineData actingLineData;  // ActingLineData 참조
+    [SerializeField] ActingLineUI actingLineUI;      // UI 관리
+    [SerializeField] STTManager sttManager;          // STT 관리 (STTManager로 대체)
+    [SerializeField] ActingLineSynchronizer synchronizer;
+    [SerializeField] AudioSource audioSource;
+    public Role currentRole;   // 현재 턴의 역할 (NPC/Player)
+    public int playerLineIndex = -1;       // 현재 대사 인덱스
+    public int npcLineIndex = -1;       // 현재 대사 인덱스
 
+    private float time_Max = 10f;            // 타이머 최대 시간
+
+    private Coroutine npcClipCoroutine;
+    private Coroutine remainTimeCoroutine;
+
+    private bool isActiveMic;
+    private string currentLine;
+    private string otherLine;
+    private void Awake()
+    {
+        if (instance)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            instance = this;
+        }
+    }
     void Start()
     {
+        synchronizer.InitData();
         if (actingLineData == null)
         {
             Debug.LogError("ActingLineData가 할당되지 않았습니다!");
             return;
         }
-
-        if (actingLineData.allActingLines.Count == 0)
-        {
-            Debug.LogError("ActingLineData가 비어있습니다. ParseActingLineFile을 호출했는지 확인하세요.");
-            return;
-        }
-
+        ProceedToNextLine();
+        scoreManager.InitAll(actingLineData.playerActingLines.Length);
         // STT 결과 콜백 연결
-        sttManager.onSttResult += HandleSttResult;
-
-        UpdateTurn();
+        recordManager.onSttResult += OnSttResult;
+        recordManager.onClipResult += OnClipResult;
     }
 
-    void Update()
-    {
-        if (isWaiting)
-        {
-            Check_Timer();
-        }
-    }
-
-    // 현재 턴에 맞는 대사와 프롬프트를 UI에 업데이트
-    public void UpdateTurn()
-    {
-        // ActingLineData 유효성 검증
-        if (actingLineData == null)
-        {
-            Debug.LogError("ActingLineData가 설정되지 않았습니다!");
-            return;
-        }
-
-        // 인덱스 범위 검증
-        if (currentTurnIndex >= actingLineData.allActingLines.Count)
-        {
-            Debug.LogError($"currentTurnIndex({currentTurnIndex})가 대사 데이터 범위를 초과했습니다!");
-            return;
-        }
-
-        foreach (string line in actingLineData.allActingLines)
-        {
-            string[] parts = line.Split(':');
-            if (parts.Length < 2)
-            {
-                Debug.LogWarning($"잘못된 형식의 라인 발견: {line}");
-                continue;
-            }
-
-            string role = parts[0].Trim();  // NPC 또는 Player
-            string dialogue = parts[1].Trim();  // 대사
-
-            // 지시문과 대사를 구분
-            string linePrompts = null;
-            int promptsStartIndex = dialogue.IndexOf('('); // '('의 위치
-            int promptsEndIndex = dialogue.IndexOf(')');   // ')'의 위치
-
-            if (promptsStartIndex != -1 && promptsEndIndex != -1 && promptsEndIndex > promptsStartIndex)
-            {
-                // 지시문 추출: '('부터 ')'까지의 내용 포함
-                linePrompts = dialogue.Substring(promptsStartIndex, promptsEndIndex - promptsStartIndex + 1).Trim();
-
-                // 대사 내용 갱신: '(' 이전과 ')' 이후를 결합
-                string beforePrompt = dialogue.Substring(0, promptsStartIndex).Trim();
-                string afterPrompt = dialogue.Substring(promptsEndIndex + 1).Trim();
-                dialogue = string.IsNullOrEmpty(beforePrompt) ? afterPrompt : $"{beforePrompt} {afterPrompt}".Trim();
-            }
-        }
-    }
 
     // STT 결과를 처리하여 대사 진행
-    public void HandleSttResult(string sttResult)
+    public void OnSttResult(string sttResult)
     {
         // STT 결과를 UI에 타이핑 효과로 출력
-        actingLineUI.UpdateSTTResult(sttResult);  // 프롬프트 없이 STT 결과만 UI에 출력
-
-        Start_Timer();
+        float score = GameManager.Instance.CompareTwoDialogue(currentLine, sttResult);
+        scoreManager.ChangeScore(score);
+        actingLineUI.UpdateSTTResult(sttResult);
+    }
+    public IEnumerator NextLineAfterSecond(float second)
+    {
+        yield return new WaitForSeconds(1f + second);
+        ProceedToNextLine();
+    }
+    public void OnClipResult(AudioClip clip)
+    {
+        audioSource.PlayOneShot(clip);
+        currentRole = Role.NPC;
+        StartCoroutine(NextLineAfterSecond(clip.length));
     }
 
-    // 녹음 duration 후, 대기시간 타이머 로직
-    // 대기시간 타이머 시작
-    private void Start_Timer()
+    //녹음 버튼을 눌렀을 때 호출할 메서드
+    public void OnRecordButtonClick()
     {
-        time_current = time_Max;         // 최대 시간으로 초기화
-        isWaiting = true;                // 타이머 활성화
-        actingLineUI.UpdateTimerUI(time_current); // 초기 타이머 값 UI로 전달
-    }
-
-    private void Check_Timer()
-    {
-        if (time_current > 0)
+        if (isActiveMic)
         {
-            time_current -= Time.deltaTime; // 시간 감소
-            actingLineUI.UpdateTimerUI(time_current); // 타이머 값 갱신
+            RecordManager.instance.StopRecording();
+            StopCoroutine(remainTimeCoroutine);
+            actingLineUI.UpdateTimerUI(0);
         }
         else
         {
-            End_Timer();
+            RecordManager.instance.StartRecording(time_Max);
+            actingLineUI.UpdateTimerUI(time_Max); // 초기 타이머 값 UI로 전달
+            remainTimeCoroutine = StartCoroutine(ShowRemainTimeCoroutine(time_Max));
+            isActiveMic = true;
         }
     }
-
-    private void End_Timer()
+    private IEnumerator ShowRemainTimeCoroutine(float time)
     {
-        Debug.Log("타이머 종료");
-        isWaiting = false;    // 타이머 비활성화
-        ProceedToNextLine();  // 다음 대사 진행
+        float remainingTime = time;
+
+        while (remainingTime > 0)
+        {
+            // UI 업데이트
+            actingLineUI.UpdateTimerUI(remainingTime);
+
+            // 한 프레임 대기
+            yield return null;
+
+            // 경과 시간 계산
+            remainingTime -= Time.deltaTime;
+        }
+
+        // 시간이 다 지나면 0으로 업데이트
+        actingLineUI.UpdateTimerUI(0);
+
+        // 코루틴 종료
     }
 
     // 대사 진행 (다음 대사로 넘어가기)
     private void ProceedToNextLine()
     {
-        // 대사 진행
-        currentTurnIndex++;
-
-        // 모든 대사를 완료하면 종료
-        if (currentTurnIndex >= actingLineData.npcActingLines.Count ||
-            currentTurnIndex >= actingLineData.playerActingLines.Count)
+        if (actingLineData.npcActingLines.Length - 1 == npcLineIndex && actingLineData.playerActingLines.Length - 1 == playerLineIndex)
         {
-            Debug.Log("모든 대사를 완료했습니다!");
+            EndConversation();
             return;
         }
+        actingLineUI.SetActiveByRole(currentRole);
+        switch (currentRole)
+        {
+            case Role.NPC:
+                NPCCase();
+                break;
+            case Role.Player:
+                PlayerCase();
+                break;
+        }
+    }
+    private void EndConversation()
+    {
+        Debug.Log("끝났다");
+    }
+    private void PlayerCase()
+    {
+        DataManager.instance.SaveCurrentData();
+        playerLineIndex++;
+        isActiveMic = false;
+        currentLine = actingLineData.playerActingLines[playerLineIndex];
+        if (currentLine.Contains('/'))
+        {
+            actingLineUI.timerPanel.SetActive(false);
+            actingLineUI.UpdateUI(string.Empty, string.Empty);
+            string[] splitted = currentLine.Split('/');
+            currentLine = splitted[0];
+            otherLine = splitted[1];
+            actingLineUI.ShowChoices(currentLine, otherLine);
+        }
+        else
+        {
+            actingLineUI.timerPanel.SetActive(true);
+            actingLineUI.UpdateUI(currentLine, actingLineData.playerPrompts[playerLineIndex]);
+        }
+    }
 
-        // 다음 대사로 진행
-        UpdateTurn();
+    private void NPCCase()
+    {
+        DataManager.instance.SaveCurrentData();
+        npcLineIndex++;
+        actingLineUI.UpdateUI(actingLineData.npcActingLines[npcLineIndex].dialogue, actingLineData.npcPrompts[npcLineIndex]);
+        StartCoroutine(NPCClipCoroutine(actingLineData.npcActingLines[npcLineIndex].clip));
+        actingLineUI.UpdateTimerUI(time_Max);
+    }
+
+    private IEnumerator NPCClipCoroutine(AudioClip clip)
+    {
+        audioSource.PlayOneShot(clip);
+        yield return new WaitForSeconds(clip.length);
+        currentRole = Role.Player;
+        ProceedToNextLine();
     }
 
     // 선택지 표시 (필요한 경우 구현)
     public void ShowChoices(string choice1, string choice2)
     {
         actingLineUI.ShowChoices(choice1, choice2);
+    }
+    public void OnClickActingBox()
+    {
+        if (currentRole == Role.NPC)
+        {
+
+        }
+    }
+    public void SelectChoice(int choiceIndex)
+    {
+        actingLineUI.timerPanel.SetActive(true);
+        string prompt;
+        if (choiceIndex == 0)
+        {
+            otherLine = string.Empty;
+            prompt = actingLineData.playerPrompts[playerLineIndex].Split('/')[0];
+        }
+        else
+        {
+            currentLine = otherLine;
+            otherLine = string.Empty;
+            prompt = actingLineData.playerPrompts[playerLineIndex].Split('/')[1];
+        }
+        actingLineUI.timerPanel.SetActive(true);
+        actingLineUI.UpdateUI(currentLine, prompt);
+        actingLineUI.choicePanel.SetActive(false);
     }
 }
