@@ -12,20 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 975aa3f76efa2a24bb37b02a2e877b05, type: 3}
   m_Name: Sample ActingLineData
   m_EditorClassIdentifier: 
-  npcActingLines:
-  - "\uC624\uB298 \uB0A0\uC528\uAC00 \uC815\uB9D0 \uC88B\uB124\uC694!"
-  - "\uCC28 \uD55C \uC794 \uD560\uAE4C\uC694?"
-  - "\uC774\uB807\uAC8C \uC88B\uC740 \uB0A0\uC744 \uD568\uAED8 \uBCF4\uB0BC \uC218
-    \uC788\uC5B4\uC11C \uAE30\uC069\uB2C8\uB2E4."
-  playerActingLines:
-  - "\uB124, \uB0A0\uC528\uAC00 \uC815\uB9D0 \uCD5C\uACE0\uC608\uC694!"
-  - "\uC88B\uC740 \uC0DD\uAC01\uC774\uC5D0\uC694. \uADF8\uB7FC \uCEE4\uD53C\uC20D\uC73C\uB85C
-    \uAC00\uC694!"
-  npcPrompts:
-  - "(\uC6C3\uC73C\uBA70)"
-  - "(\uC870\uC6A9\uD788)"
-  - "(\uC6C3\uC73C\uBA70)"
-  playerPrompts:
-  - "(\uD765\uBD84\uD558\uBA70)"
-  - 
   actingLineFilePath: Assets/Data/Sample1.txt
+  allActingLines: []
+  playerActingLines: []
+  playerPrompts: []
+  npcActingLines: []
+  npcPrompts: []

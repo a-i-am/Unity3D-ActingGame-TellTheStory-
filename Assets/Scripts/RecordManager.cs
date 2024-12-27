@@ -16,7 +16,7 @@ public class RecordManager : MonoBehaviour
     private const string API_URL = "https://naveropenapi.apigw.ntruss.com/recog/v1/stt?lang=Kor";
     private AudioClip recordedClip;
 
-    public Action<string> onSttResult;
+    public Action<string> onSttResult;//onSttresult += MyMthod
 
     [Header("Waveform Settings")]
     public float maxAmplitude = 10f;
@@ -114,8 +114,6 @@ public class RecordManager : MonoBehaviour
         MoveArrow(1.0f);
 
         currentWavData = ConvertAudioClipToWav(recordedClip);
-        //뷁
-        DataManager.instance.SaveRecordedAudio(currentWavData, "Test.wav");
         yield return StartCoroutine(SendSpeechRecognitionRequest(currentWavData));
     }
 
@@ -133,13 +131,22 @@ public class RecordManager : MonoBehaviour
         if (request.result == UnityWebRequest.Result.Success)
         {
             Debug.Log("STT 성공: " + request.downloadHandler.text);
-            onSttResult?.Invoke(request.downloadHandler.text);
+
+            // {"text":"와 "} 제거
+            string sttResult = request.downloadHandler.text
+                .Replace("{\"text\":\"", "")
+                .Replace("\"}", "");
+
+            // 결과 전달
+            onSttResult?.Invoke(sttResult);
         }
         else
         {
             Debug.LogError("STT 실패: " + request.error);
         }
     }
+
+
 
     private void ProcessWaveformSamples(float elapsedTime)
     {
