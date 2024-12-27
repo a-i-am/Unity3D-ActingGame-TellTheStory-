@@ -45,85 +45,13 @@ public class ActingLineTriggerManager : MonoBehaviour
             Debug.LogError("ActingLineData가 할당되지 않았습니다!");
             return;
         }
-<<<<<<< HEAD
-
-        if (actingLineData.allActingLines.Count == 0)
-        {
-            Debug.LogError("ActingLineData가 비어있습니다. ParseActingLineFile을 호출했는지 확인하세요.");
-            return;
-        }
-
-        //if (actingLineData.npcActingLines.Count == 0 || actingLineData.playerActingLines.Count == 0)
-        //{
-        //    Debug.LogError("ActingLineData가 비어있습니다. ParseActingLineFile을 호출했는지 확인하세요.");
-        //    return;
-        //}
-
-=======
         ProceedToNextLine();
         scoreManager.InitAll(actingLineData.playerActingLines.Length);
->>>>>>> a8f9250aebba35c817f828eb4f1f2661aa3521b4
         // STT 결과 콜백 연결
         recordManager.onSttResult += OnSttResult;
         recordManager.onClipResult += OnClipResult;
     }
 
-<<<<<<< HEAD
-    void Update()
-    {
-        if (isWaiting)
-        {
-            Check_Timer();
-        }
-    }
-
-
-    // 현재 턴에 맞는 대사와 프롬프트를 UI에 업데이트
-    public void UpdateTurn()
-    {
-        //string currentLine = actingLineData.allActingLines[currentTurnIndex]; // 현재 대사 가져오기
-        //string role;
-        //string line;
-        //string linePrompts;
-
-        //// 역할에 따라 대사와 지시문 저장
-        //if (role.Equals("NPC", System.StringComparison.OrdinalIgnoreCase))
-        //{
-        //    actingLineData.npcActingLines.Add(line);
-        //    actingLineData.npcPrompts.Add(linePrompts ?? "");  // 지시문이 없는 경우 빈 문자열
-        //}
-        //else if (role.Equals("Player", System.StringComparison.OrdinalIgnoreCase))
-        //{
-        //    actingLineData.playerActingLines.Add(line);
-        //    actingLineData.playerPrompts.Add(linePrompts ?? "");  // 지시문이 없는 경우 빈 문자열
-        //}
-        //else
-        //{
-        //    Debug.LogWarning($"알 수 없는 역할: {role} - {line}");
-        //}
-
-        //// UI 갱신
-        //actingLineUI.UpdateUI(line, linePrompts);
-    }
-
-    public void PassIndex()
-    {
-        // 대사 진행
-        currentTurnIndex++;
-
-        // 모든 대사를 완료하면 종료
-        if (currentTurnIndex >= actingLineData.allActingLines.Count)
-        {
-            Debug.Log("모든 대사를 완료했습니다!");
-            return;
-        }
-
-        // 다음 대사로 진행
-        UpdateTurn();
-
-    }
-=======
->>>>>>> a8f9250aebba35c817f828eb4f1f2661aa3521b4
 
     // STT 결과를 처리하여 대사 진행
     public void OnSttResult(string sttResult)
@@ -164,14 +92,6 @@ public class ActingLineTriggerManager : MonoBehaviour
     }
     private IEnumerator ShowRemainTimeCoroutine(float time)
     {
-<<<<<<< HEAD
-        Debug.Log("타이머 종료");
-        isWaiting = false;    // 타이머 비활성화
-        PassIndex();  // 다음 대사 진행
-    }
-
-    // 대사 진행 (다음 대사로 넘어가기)
-=======
         float remainingTime = time;
 
         while (remainingTime > 0)
@@ -253,7 +173,6 @@ public class ActingLineTriggerManager : MonoBehaviour
         currentRole = Role.Player;
         ProceedToNextLine();
     }
->>>>>>> a8f9250aebba35c817f828eb4f1f2661aa3521b4
 
     // 선택지 표시 (필요한 경우 구현)
     public void ShowChoices(string choice1, string choice2)

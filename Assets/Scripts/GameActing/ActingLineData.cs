@@ -103,9 +103,6 @@ public class ActingLineData : ScriptableObject
                 Debug.LogWarning($"알 수 없는 역할: {role} - {line}");
             }
         }
-<<<<<<< HEAD
-        LineSeparator();
-=======
 
         AudioClip[] clips = GetClips();
         npcActingLines = new LineSet[npcActingLinesList.Count];
@@ -118,62 +115,14 @@ public class ActingLineData : ScriptableObject
         playerPrompts = playerPromptsList.ToArray();
 
         Debug.Log("대사 파일 파싱 완료!");
->>>>>>> a8f9250aebba35c817f828eb4f1f2661aa3521b4
     }
 
-    public void LineSeparator()
-    {
-        foreach (var line in allActingLines)
-        {
-            string[] parts = line.Split(':');
-            if (parts.Length < 2)
-            {
-                Debug.LogWarning($"잘못된 형식의 라인 발견: {line}");
-                continue;
-            }
 
-            string role = parts[0].Trim();  // NPC 또는 Player
-            string dialogue = parts[1].Trim();  // 대사
 
-<<<<<<< HEAD
-            // 지시문과 대사를 구분
-            string linePrompts = null;
-            int promptsStartIndex = dialogue.IndexOf('('); // '('의 위치
-            int promptsEndIndex = dialogue.IndexOf(')');   // ')'의 위치
-
-            if (promptsStartIndex != -1 && promptsEndIndex != -1 && promptsEndIndex > promptsStartIndex)
-            {
-                // 지시문 추출: '('부터 ')'까지의 내용 포함
-                linePrompts = dialogue.Substring(promptsStartIndex, promptsEndIndex - promptsStartIndex + 1).Trim();
-
-                // 대사 내용 갱신: '(' 이전과 ')' 이후를 결합
-                string beforePrompt = dialogue.Substring(0, promptsStartIndex).Trim();
-                string afterPrompt = dialogue.Substring(promptsEndIndex + 1).Trim();
-                dialogue = string.IsNullOrEmpty(beforePrompt) ? afterPrompt : $"{beforePrompt} {afterPrompt}".Trim();
-            }
-
-            // 역할에 따른 순열 저장
-            if (role == "NPC")
-            {
-                npcActingLines.Add(dialogue);
-                npcPrompts.Add(linePrompts ?? "");  // 지시문이 없는 경우 빈 문자열
-            }
-            else if (role == "Player")
-            {
-                playerActingLines.Add(dialogue);
-                playerPrompts.Add(linePrompts ?? "");  // 지시문이 없는 경우 빈 문자열
-            }
-            else
-            {
-                Debug.LogWarning($"알 수 없는 역할: {role} - {dialogue}");
-            }
-        }
-=======
     private AudioClip[] GetClips()
     {
         AudioClip[] clips = Resources.LoadAll<AudioClip>($"NPC{GameManager.Instance.currentNPC}/Act{GameManager.Instance.currentAct}");
         return clips;
->>>>>>> a8f9250aebba35c817f828eb4f1f2661aa3521b4
     }
 }
 [Serializable]
