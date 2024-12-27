@@ -12,14 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 975aa3f76efa2a24bb37b02a2e877b05, type: 3}
   m_Name: ActingLineData
   m_EditorClassIdentifier: 
-<<<<<<< HEAD:Assets/Scripts/GameActing/Sample ActingLineData.asset
-  actingLineFilePath: Assets/Data/Sample1.txt
-  allActingLines: []
-  playerActingLines: []
-  playerPrompts: []
-  npcActingLines: []
-  npcPrompts: []
-=======
   npcActingLines:
   - dialogue: 
     clip: {fileID: 0}
@@ -39,4 +31,3 @@ MonoBehaviour:
   - "(\uD765\uBD84\uD558\uBA70)"
   - 
   actingLineFilePath: 
->>>>>>> a0b00ea (오디오 클립 세팅):Assets/ScriptableObject/ActingLineData.asset

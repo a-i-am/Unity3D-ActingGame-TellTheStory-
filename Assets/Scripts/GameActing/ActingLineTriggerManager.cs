@@ -95,7 +95,7 @@ public class ActingLineTriggerManager : MonoBehaviour
         // 역할에 따라 대사와 지시문 저장
         if (role.Equals("NPC", System.StringComparison.OrdinalIgnoreCase))
         {
-            actingLineData.npcActingLines.Add(line);
+            actingLineData.npcActingLines.Add(new(line, null));
             actingLineData.npcPrompts.Add(linePrompts ?? "");  // 지시문이 없는 경우 빈 문자열
         }
         else if (role.Equals("Player", System.StringComparison.OrdinalIgnoreCase))

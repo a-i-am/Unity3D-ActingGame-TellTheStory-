@@ -50,10 +50,10 @@ public class ActingLineData : ScriptableObject
     {
         // 파일 내용을 읽어오기
         rawData = File.ReadAllLines(actingLineFilePath);
-        UseAllLine();
+        UseAllLine(npcClips);
     }
 
-    private void UseAllLine()
+    private void UseAllLine(AudioClip[] npcClips)
     {
         foreach (string line in rawData)
         {
