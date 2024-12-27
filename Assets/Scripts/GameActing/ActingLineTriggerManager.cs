@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 public class ActingLineTriggerManager : MonoBehaviour
@@ -75,6 +76,7 @@ public class ActingLineTriggerManager : MonoBehaviour
 
         foreach (string line in actingLineData.allActingLines)
         {
+<<<<<<< HEAD
             string[] parts = line.Split(':');
             if (parts.Length < 2)
             {
@@ -116,6 +118,15 @@ public class ActingLineTriggerManager : MonoBehaviour
             {
                 Debug.LogWarning($"알 수 없는 역할: {role} - {dialogue}");
             }
+=======
+            line = actingLineData.npcActingLines[currentTurnIndex].dialogue;
+            prompts = actingLineData.npcPrompts[currentTurnIndex];
+        }
+        else if (currentRole == Role.Player)
+        {
+            line = actingLineData.playerActingLines[currentTurnIndex];
+            prompts = actingLineData.playerPrompts[currentTurnIndex];
+>>>>>>> a0b00ea (오디오 클립 세팅)
         }
 
 
@@ -136,8 +147,15 @@ public class ActingLineTriggerManager : MonoBehaviour
         //actingLineUI.UpdateUI(line, prompts);
     }
 
+<<<<<<< HEAD
 
 
+=======
+    public void HandlePlayerInput(string input)
+    {
+        // STT 결과 처리
+        //sttManager.ProcessInput(input);
+>>>>>>> a0b00ea (오디오 클립 세팅)
 
 
 

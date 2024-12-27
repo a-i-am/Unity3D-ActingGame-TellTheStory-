@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 975aa3f76efa2a24bb37b02a2e877b05, type: 3}
+  m_Name: ActingLineData
+  m_EditorClassIdentifier: 
+<<<<<<< HEAD:Assets/Scripts/GameActing/Sample ActingLineData.asset
+  actingLineFilePath: Assets/Data/Sample1.txt
+  allActingLines: []
+  playerActingLines: []
+  playerPrompts: []
+  npcActingLines: []
+  npcPrompts: []
+=======
+  npcActingLines:
+  - dialogue: 
+    clip: {fileID: 0}
+  - dialogue: 
+    clip: {fileID: 0}
+  - dialogue: 
+    clip: {fileID: 0}
+  playerActingLines:
+  - "\uB124, \uB0A0\uC528\uAC00 \uC815\uB9D0 \uCD5C\uACE0\uC608\uC694! / dsdasfadsfdss"
+  - "\uC88B\uC740 \uC0DD\uAC01\uC774\uC5D0\uC694. \uADF8\uB7FC \uCEE4\uD53C\uC20D\uC73C\uB85C
+    \uAC00\uC694!"
+  npcPrompts:
+  - "(\uC6C3\uC73C\uBA70) / (dddd)"
+  - "(\uC870\uC6A9\uD788)"
+  - "(\uC6C3\uC73C\uBA70)"
+  playerPrompts:
+  - "(\uD765\uBD84\uD558\uBA70)"
+  - 
+  actingLineFilePath: 
+>>>>>>> a0b00ea (오디오 클립 세팅):Assets/ScriptableObject/ActingLineData.asset

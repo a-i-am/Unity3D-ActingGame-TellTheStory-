@@ -4,9 +4,9 @@ using UnityEngine;
 public class DataManager : MonoBehaviour
 {
     public static DataManager instance;
+    
     private void Awake()
     {
-        Debug.Log("Persistent Data Path: " + Application.persistentDataPath);
         if (instance)
         {
             Destroy(gameObject);
@@ -20,13 +20,23 @@ public class DataManager : MonoBehaviour
     private void Start()
     {
         var source = gameObject.AddComponent<AudioSource>();
-        var clip = LoadAudioClipFromWav("Test.wav");
-        source.PlayOneShot(clip);
     }
-    public void SaveRecordedAudio(byte[] wavData, string fileName)
+    public void SaveRecordedAudio(byte[] wavData, string filePath, string fileName)
     {
-        string path = Path.Combine(Application.persistentDataPath, fileName);
-        File.WriteAllBytes(path, wavData);
+        // 경로 생성
+        string directoryPath = Path.Combine(Application.persistentDataPath, filePath); // 폴더 경로
+        string fileFullPath = Path.Combine(directoryPath, fileName); // 파일 경로
+
+        // 디렉토리 확인 및 생성
+        if (!Directory.Exists(directoryPath))
+        {
+            Directory.CreateDirectory(directoryPath);
+        }
+
+        // 파일 저장
+        File.WriteAllBytes(fileFullPath, wavData);
+
+        Debug.Log($"Audio file saved at: {fileFullPath}");
     }
     public AudioClip LoadAudioClipFromWav(string fileName)
     {
@@ -114,10 +124,50 @@ public class DataManager : MonoBehaviour
     }
     public void SaveCurrentData()
     {
-    
+        int npcId = GameManager.Instance.currentNPC;
+        int npcLine = GameManager.Instance.npcCurrentLine[npcId];
+
+        PlayerPrefs.SetInt($"NPC{npcId}", npcLine);
+        PlayerPrefs.Save();
+
+        Debug.Log($"[SaveCurrentData] NPC ID: {npcId}, Saved Line: {npcLine}");
     }
+
     public void LoadGameData()
     {
-    
+        for (int i = 0; i < GameManager.Instance.npcCurrentLine.Length; i++)
+        {
+            GameManager.Instance.npcCurrentLine[i] = PlayerPrefs.GetInt($"NPC{i}", 0); // 기본값을 0으로 설정
+            Debug.Log($"[LoadGameData] NPC ID: {i}, Loaded Line: {GameManager.Instance.npcCurrentLine[i]}");
+        }
+    }
+    public void NewGame()
+    {
+        PlayerPrefs.DeleteAll();
+
+        string path = Application.persistentDataPath;
+
+        if (Directory.Exists(path))
+        {
+            DirectoryInfo directoryInfo = new DirectoryInfo(path);
+
+            // 모든 파일 삭제
+            foreach (FileInfo file in directoryInfo.GetFiles())
+            {
+                file.Delete();
+            }
+
+            // 모든 폴더 삭제
+            foreach (DirectoryInfo directory in directoryInfo.GetDirectories())
+            {
+                directory.Delete(true); // true: 하위 파일/폴더까지 삭제
+            }
+
+            Debug.Log("Application.persistentDataPath의 모든 데이터가 삭제되었습니다.");
+        }
+        else
+        {
+            Debug.LogWarning("Application.persistentDataPath 경로가 존재하지 않습니다.");
+        }
     }
 }

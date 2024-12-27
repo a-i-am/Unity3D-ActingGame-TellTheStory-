@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Scripts/GameManager.cs.meta
 guid: 39bad271211c7a34eabe31beee737ec6
+=======
+guid: 640aba1904de3544db5c94aa7b1eb2ac
+>>>>>>> a0b00ea (오디오 클립 세팅):Assets/Scripts/RhythmGame/GameManager.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2

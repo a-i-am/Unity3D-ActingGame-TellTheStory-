@@ -33,8 +33,8 @@ public class RecordManager : MonoBehaviour
     private float stepSize;
     private float recordingDuration;
     private float minY = 0.03f;
-    public byte[] currentWavData;
 
+    private GameManager gameManager;
     private void Awake()
     {
         if (instance)
@@ -51,7 +51,10 @@ public class RecordManager : MonoBehaviour
         meshFilter = GetComponent<MeshFilter>();
         InitWaveformMesh();
     }
-
+    private void Start()
+    {
+        
+    }
     private void InitWaveformMesh()
     {
         mesh = new Mesh();
@@ -113,8 +116,14 @@ public class RecordManager : MonoBehaviour
         StopCoroutine(arrowCoroutine);
         MoveArrow(1.0f);
 
+<<<<<<< HEAD
         currentWavData = ConvertAudioClipToWav(recordedClip);
         yield return StartCoroutine(SendSpeechRecognitionRequest(currentWavData));
+=======
+        byte[] wavData = ConvertAudioClipToWav(recordedClip);
+        DataManager.instance.SaveRecordedAudio(wavData, $"NPC{gameManager.currentNPC}/Act{gameManager.currentAct}", $"Line{gameManager.npcCurrentLine[gameManager.currentNPC]}.wav");
+        yield return StartCoroutine(SendSpeechRecognitionRequest(wavData));
+>>>>>>> a0b00ea (오디오 클립 세팅)
     }
 
     private IEnumerator SendSpeechRecognitionRequest(byte[] audioData)
