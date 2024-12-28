@@ -251,7 +251,6 @@ public class RecordManager : MonoBehaviour
             arrow.transform.position = new Vector3(xOffset, arrow.transform.position.y, arrow.transform.position.z);
         }
     }
-
     private byte[] ConvertAudioClipToWav(AudioClip clip)
     {
         using MemoryStream stream = new MemoryStream();

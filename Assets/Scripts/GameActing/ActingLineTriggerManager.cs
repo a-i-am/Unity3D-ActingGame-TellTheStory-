@@ -1,5 +1,3 @@
-using NUnit.Framework.Internal;
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -51,8 +49,6 @@ public class ActingLineTriggerManager : MonoBehaviour
         recordManager.onSttResult += OnSttResult;
         recordManager.onClipResult += OnClipResult;
     }
-
-
     // STT 결과를 처리하여 대사 진행
     public void OnSttResult(string sttResult)
     {
