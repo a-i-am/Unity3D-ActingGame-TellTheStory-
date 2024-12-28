@@ -8,7 +8,7 @@ public class ActingLineUI : MonoBehaviour
     public TextMeshProUGUI promptText;     // 행동 지시문 텍스트
     public TextMeshProUGUI sttText;
     public TextMeshProUGUI remainTimeText;
-
+    
     public GameObject choicePanel;          // 선택지 UI 패널
     public TextMeshProUGUI choice1Text;     // 선택지 1 텍스트
     public TextMeshProUGUI choice2Text;     // 선택지 2 텍스트
