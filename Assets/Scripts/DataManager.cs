@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
 public class DataManager : MonoBehaviour
@@ -38,36 +40,9 @@ public class DataManager : MonoBehaviour
 
         Debug.Log($"Audio file saved at: {fileFullPath}");
     }
-    public AudioClip LoadAudioClipFromWav(string fileName)
-    {
-        // 파일 경로 생성
-        string path = Path.Combine(Application.persistentDataPath, fileName);
-
-        if (!File.Exists(path))
-        {
-            Debug.LogError($"파일이 존재하지 않습니다: {path}");
-            return null;
-        }
-
-        // WAV 데이터를 읽어들임
-        byte[] wavData = File.ReadAllBytes(path);
-
-        // WAV 데이터를 AudioClip으로 변환
-        AudioClip audioClip = WavToAudioClip(wavData);
-        if (audioClip != null)
-        {
-            Debug.Log($"WAV 파일 로드 성공: {path}");
-        }
-        else
-        {
-            Debug.LogError("WAV 파일 로드 실패.");
-        }
-
-        return audioClip;
-    }
 
     // WAV 데이터를 AudioClip으로 변환
-    private AudioClip WavToAudioClip(byte[] wavData)
+    public AudioClip WavToAudioClip(byte[] wavData)
     {
         // 파일 최소 길이 확인
         if (wavData.Length < 44)
@@ -140,20 +115,30 @@ public class DataManager : MonoBehaviour
 
         Debug.Log($"[SaveCurrentData] NPC ID: {npcId}, Saved Line: {npcLine}");
     }
-
+    public void OnNpcFinished(int npcId)
+    {
+        GameManager.Instance.npcFinished[npcId] = 1;//1은 끝났다는 의미 => 재생이 가능하다.
+        PlayerPrefs.SetInt($"NPC{npcId}_Finished", 1);
+    }
+    public void OnNpcNewGame(int npcId)
+    {
+        GameManager.Instance.npcFinished[npcId] = 0;//0은 진행 중이거나 시작 전이라는 의미 => 재생이 불가능하다.
+        PlayerPrefs.SetInt($"NPC{npcId}_Finished", 0);
+    }
     public void LoadGameData()
     {
         for (int i = 0; i < 4; i++)
         {
             GameManager.Instance.npcCurrentLine[i] = PlayerPrefs.GetInt($"NPC{i}_Line", 0);
             GameManager.Instance.npcCurrentRole[i] = PlayerPrefs.GetInt($"NPC{i}_Role", 0);
+            GameManager.Instance.npcFinished[i] = PlayerPrefs.GetInt($"NPC{i}_Finished", 0);
             Debug.Log($"[LoadGameData] NPC : {i}, Loaded Line : {GameManager.Instance.npcCurrentLine[i]}, Loaded Role: {GameManager.Instance.npcCurrentRole[i]}");
         }
     }
     public void NewGame()
     {
         PlayerPrefs.DeleteAll();
-
+        PlayerPrefs.SetInt("ExistData", 1);
         string path = Application.persistentDataPath;
 
         if (Directory.Exists(path))
@@ -178,5 +163,42 @@ public class DataManager : MonoBehaviour
         {
             Debug.LogWarning("Application.persistentDataPath 경로가 존재하지 않습니다.");
         }
+    }
+    public AudioClip[] GetNPCClips(int npcId, int actId)
+    {
+        AudioClip[] clips = Resources.LoadAll<AudioClip>($"NPC{npcId}/Act{actId}");
+        return clips;
+    }
+    public AudioClip[] GetRecoredClips(int npcIndex, int actIndex)
+    {
+        string folderPath = Path.Combine(Application.persistentDataPath, $"NPC{npcIndex}/Act{actIndex}");
+
+        if (!Directory.Exists(folderPath))
+        {
+            Debug.LogError($"Folder not found: {folderPath}");
+            return null;
+        }
+
+        // 폴더 내의 모든 wav 파일 가져오기
+        string[] files = Directory.GetFiles(folderPath, "*.wav");
+
+        if (files.Length == 0)
+        {
+            Debug.LogError($"No .wav files found in: {folderPath}");
+            return null;
+        }
+        List<byte[]> fileDataList = new();
+        foreach (string file in files)
+        {
+            byte[] fileData = File.ReadAllBytes(file);
+            fileDataList.Add(fileData);
+        }
+        AudioClip[] recordedClips = fileDataList.Select(item => DataManager.instance.WavToAudioClip(item)).ToArray();
+        return recordedClips;
+    }
+    [ContextMenu("DeleteAllPrefs")]
+    public void DeleteAllPrefs()
+    {
+        PlayerPrefs.DeleteAll();
     }
 }

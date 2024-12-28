@@ -11,20 +11,23 @@ public class GameManager : MonoBehaviour
     public int currentAct;//NPC와 Act는 게임 씬에서 들어갔을 때 어떤 데이터를 불러올지 결정한다.
     public int[] npcCurrentLine;
     public int[] npcCurrentRole;
-
+    public int[] npcFinished;
     void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            npcCurrentLine = new int[4];
-            npcCurrentRole = new int[4];
         }
         else
         {
             Destroy(gameObject);
         }
+    }
+    private void Start()
+    {
+        npcCurrentLine = new int[4];
+        npcCurrentRole = new int[4];
     }
     public float CompareTwoDialogue(string dialogue1, string dialogue2)
     {
