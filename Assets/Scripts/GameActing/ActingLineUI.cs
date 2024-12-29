@@ -8,12 +8,37 @@ public class ActingLineUI : MonoBehaviour
     public TextMeshProUGUI promptText;     // 행동 지시문 텍스트
     public TextMeshProUGUI sttText;
     public TextMeshProUGUI remainTimeText;
+    public GameObject scorePanel;
     
     public GameObject choicePanel;          // 선택지 UI 패널
     public TextMeshProUGUI choice1Text;     // 선택지 1 텍스트
     public TextMeshProUGUI choice2Text;     // 선택지 2 텍스트
 
     public GameObject timerPanel;           //타이머 UI 패널
+
+    [SerializeField] EntrancePanel entrancePanel;
+    [SerializeField] ResultPanel resultPanel;
+    private Coroutine updateSTTResult;
+
+    private void Start()
+    {
+        entrancePanel.gameObject.SetActive(true);
+        resultPanel.gameObject.SetActive(false);
+        actingLineText.gameObject.SetActive(false);
+        promptText.gameObject.SetActive(false);
+        sttText.gameObject.SetActive(false);
+        remainTimeText.gameObject.SetActive(false);
+        choicePanel.SetActive(false);
+        timerPanel.SetActive(false);
+        scorePanel.SetActive(false);
+    }
+    public void OnStartButtonClick()
+    {
+        actingLineText.gameObject.SetActive(true);
+        promptText.gameObject.SetActive(true);
+        scorePanel.SetActive(true);
+        remainTimeText.gameObject.SetActive(true);
+    }
     // 대사와 감정 지시문을 UI에 업데이트하는 함수
     public void UpdateUI(string line, string linePrompts)
     {
@@ -24,7 +49,9 @@ public class ActingLineUI : MonoBehaviour
     // STT 결과를 UI에 타이핑 효과로 업데이트하는 함수
     public void UpdateSTTResult(string sttResult)
     {
-        StartCoroutine(TypeText(sttResult, sttText));
+        if (updateSTTResult != null)
+            StopCoroutine(updateSTTResult);
+        updateSTTResult =  StartCoroutine(TypeText(sttResult, sttText));
     }
 
     // STT 결과를 타이핑 효과로 출력하는 코루틴
@@ -36,6 +63,7 @@ public class ActingLineUI : MonoBehaviour
             textComponent.text += letter;
             yield return new WaitForSeconds(0.05f);  // 타이핑 속도 조절
         }
+        updateSTTResult = null;
     }
 
     // 선택지 표시
@@ -72,5 +100,10 @@ public class ActingLineUI : MonoBehaviour
                 promptText.gameObject.SetActive(true);
                 break;
         }
+    }
+    public void ShowResultPanel()
+    {
+        ScoreManager.instance.GetResult(out float score, out string accurateStr, out string inaccurateStr);
+        resultPanel.SetResult(score, accurateStr, inaccurateStr);
     }
 }
