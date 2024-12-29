@@ -7,6 +7,7 @@ public class EpisodeUI : MonoBehaviour
     [SerializeField] EpisodeData episodeData;
     [SerializeField] private Transform buttonParent;
     [SerializeField] private Button episodeButtonPrefab;
+    [SerializeField] private GameObject episodeWindow;
     [SerializeField] private GameObject episodeInfoPanel;
     [SerializeField] private GameObject storyInfoArea;
     [SerializeField] private Button gameStartButton;
@@ -14,7 +15,6 @@ public class EpisodeUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI episodeTitleText;
     [SerializeField] private TextMeshProUGUI summaryText;
     private EpisodeData.Episode selectedEpisode; // 선택된 에피소드 저장
-
 
     void Start()
     {
@@ -74,6 +74,11 @@ public class EpisodeUI : MonoBehaviour
         {
             Debug.LogWarning("에피소드를 선택해주세요.");
         }
+    }
+
+    public void ExitEpisodeWindow()
+    {
+        episodeWindow.SetActive(false);
     }
 
 }
