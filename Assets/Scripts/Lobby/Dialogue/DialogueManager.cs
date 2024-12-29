@@ -12,7 +12,9 @@ public class DialogueManager : MonoBehaviour
     public Image charachterIcon;
     public TextMeshProUGUI characterName;
     public TextMeshProUGUI dialogueArea;
-    public GameObject dialogueTemplate; 
+    public GameObject dialogueTemplate;
+    public GameObject episodeWindow;
+
     private Queue<DialogueLine> lines;
 
     public bool isDialogueActive = false;
@@ -81,5 +83,7 @@ public class DialogueManager : MonoBehaviour
     {
         isDialogueActive = false;
         animator.Play("Hide");
+
+        episodeWindow.SetActive(true);
     }
 }
