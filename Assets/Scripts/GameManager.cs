@@ -23,11 +23,9 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-    }
-    private void Start()
-    {
         npcCurrentLine = new int[4];
         npcCurrentRole = new int[4];
+        npcFinished = new int[4];
     }
     public float CompareTwoDialogue(string dialogue1, string dialogue2)
     {

@@ -16,47 +16,42 @@ public class RecordManager : MonoBehaviour
     private const string API_URL = "https://naveropenapi.apigw.ntruss.com/recog/v1/stt?lang=Kor";
     private AudioClip recordedClip;
 
-    public Action<string> onSttResult;//onSttresult += MyMthod
-    public Action<AudioClip> onClipResult;
+    public Action<string, AudioClip> onSttResult;//onSttresult += MyMthod
 
     [Header("Waveform Settings")]
-    public float maxAmplitude = 10f;
-    public float width = 10f;
-    public int vertexCount = 400;
+    private float amplitudeSize = 15f;
+    private float width = 8f;
+    private int vertexCount = 400;
     public GameObject arrow;
 
     private Mesh mesh;
     private MeshFilter meshFilter;
+    public MeshRenderer meshRenderer;
     private Vector3[] vertices;
     private int[] triangles;
     private Coroutine arrowCoroutine;
     private float stepSize;
     private float recordingDuration;
     private float minY = 0.03f;
+    private float maxY = 2.5f;
 
     private GameManager gameManager;
     private bool stopFlag;
+    private string sttResult;
 
     private void Awake()
     {
-        if (instance)
-        {
-            Destroy(gameObject);
-        }
-        else
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-
+        instance = this;
         meshFilter = GetComponent<MeshFilter>();
+        meshRenderer = GetComponent<MeshRenderer>();
         InitWaveformMesh();
+        meshRenderer.enabled = false;
     }
     private void Start()
     {
         gameManager = GameManager.Instance;
     }
-    private void InitWaveformMesh()
+    public void InitWaveformMesh()
     {
         mesh = new Mesh();
         meshFilter.mesh = mesh;
@@ -91,6 +86,7 @@ public class RecordManager : MonoBehaviour
 
     public void StartRecording(float duration)
     {
+        meshRenderer.enabled = true;
         stopFlag = false;
         InitWaveformMesh();
         recordingDuration = duration;
@@ -120,8 +116,9 @@ public class RecordManager : MonoBehaviour
 
         byte[] currentWavData = ConvertAudioClipToWav(recordedClip);
         yield return StartCoroutine(SendSpeechRecognitionRequest(currentWavData));
-        onClipResult?.Invoke(recordedClip);
+        onSttResult?.Invoke(sttResult, recordedClip);
         DataManager.instance.SaveRecordedAudio(currentWavData, $"NPC{gameManager.currentNPC}/Act{gameManager.currentAct}", $"Line{gameManager.npcCurrentLine[gameManager.currentNPC] + 1}.wav");
+        sttResult = null;
     }
 
     private IEnumerator SendSpeechRecognitionRequest(byte[] audioData)
@@ -140,12 +137,11 @@ public class RecordManager : MonoBehaviour
             Debug.Log("STT 성공: " + request.downloadHandler.text);
 
             // {"text":"와 "} 제거
-            string sttResult = request.downloadHandler.text
+            sttResult = request.downloadHandler.text
                 .Replace("{\"text\":\"", "")
                 .Replace("\"}", "");
 
             // 결과 전달
-            onSttResult?.Invoke(sttResult);
         }
         else
         {
@@ -198,7 +194,7 @@ public class RecordManager : MonoBehaviour
 
         float averageAmplitude = samples.Length > 0 ? Mathf.Abs(samples.Average()) : 0;
         int vertexIndex = Mathf.FloorToInt((elapsedTime / recordingDuration) * (vertexCount - 1));
-        UpdateVertex(vertexIndex, averageAmplitude * maxAmplitude);
+        UpdateVertex(vertexIndex, averageAmplitude * amplitudeSize);
         UpdateWaveformMesh();
     }
 
@@ -206,7 +202,7 @@ public class RecordManager : MonoBehaviour
     {
         float x = index * stepSize;
         float y = Mathf.Max(amplitude, minY);
-
+        y = Mathf.Min(y, maxY);
         vertices[index] = new Vector3(x, y, 0);
         vertices[index + vertexCount] = new Vector3(x, -y, 0);
     }

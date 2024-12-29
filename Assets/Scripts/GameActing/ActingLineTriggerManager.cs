@@ -1,5 +1,7 @@
+using NUnit.Framework.Internal;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class ActingLineTriggerManager : MonoBehaviour
 {
@@ -21,9 +23,11 @@ public class ActingLineTriggerManager : MonoBehaviour
     private Coroutine npcClipCoroutine;
     private Coroutine remainTimeCoroutine;
 
+    private bool isPlayingRecorded;
     private bool isActiveMic;
     private string currentLine;
     private string otherLine;
+
     private void Awake()
     {
         if (instance)
@@ -43,31 +47,41 @@ public class ActingLineTriggerManager : MonoBehaviour
             Debug.LogError("ActingLineData가 할당되지 않았습니다!");
             return;
         }
-        ProceedToNextLine();
         scoreManager.InitAll(actingLineData.playerActingLines.Length);
         // STT 결과 콜백 연결
         recordManager.onSttResult += OnSttResult;
-        recordManager.onClipResult += OnClipResult;
     }
     // STT 결과를 처리하여 대사 진행
-    public void OnSttResult(string sttResult)
+    public void OnSttResult(string sttResult, AudioClip clip)
     {
         // STT 결과를 UI에 타이핑 효과로 출력
         float score = GameManager.Instance.CompareTwoDialogue(currentLine, sttResult);
-        scoreManager.ChangeScore(score);
         actingLineUI.UpdateSTTResult(sttResult);
-    }
-    public IEnumerator NextLineAfterSecond(float second)
-    {
-        yield return new WaitForSeconds(1f + second);
-        ProceedToNextLine();
-    }
-    public void OnClipResult(AudioClip clip)
-    {
+        //Clip
+        isPlayingRecorded = true;
         audioSource.PlayOneShot(clip);
         currentRole = Role.NPC;
-        StartCoroutine(NextLineAfterSecond(clip.length));
+        StartCoroutine(NextStep(clip.length, score, sttResult));
     }
+    public IEnumerator NextStep(float second, float score, string sttResult)
+    {
+        yield return new WaitForSeconds(1f + second);
+        recordManager.meshRenderer.enabled = false;
+        isPlayingRecorded = false;
+        
+        if (score>=0.3f)
+        {
+            scoreManager.ChangeScore(score, sttResult);
+            ProceedToNextLine();
+        }
+        else
+        {
+            OnInaccurateSimilarity();
+        }
+        
+        
+    }
+
 
     //녹음 버튼을 눌렀을 때 호출할 메서드
     public void OnRecordButtonClick()
@@ -77,12 +91,14 @@ public class ActingLineTriggerManager : MonoBehaviour
             RecordManager.instance.StopRecording();
             StopCoroutine(remainTimeCoroutine);
             actingLineUI.UpdateTimerUI(0);
+            isActiveMic = false;
         }
         else
         {
             RecordManager.instance.StartRecording(time_Max);
             actingLineUI.UpdateTimerUI(time_Max); // 초기 타이머 값 UI로 전달
             remainTimeCoroutine = StartCoroutine(ShowRemainTimeCoroutine(time_Max));
+            actingLineUI.sttText.text = string.Empty;
             isActiveMic = true;
         }
     }
@@ -109,7 +125,7 @@ public class ActingLineTriggerManager : MonoBehaviour
     }
 
     // 대사 진행 (다음 대사로 넘어가기)
-    private void ProceedToNextLine()
+    public void ProceedToNextLine()
     {
         if (actingLineData.npcActingLines.Length - 1 == npcLineIndex && actingLineData.playerActingLines.Length - 1 == playerLineIndex)
         {
@@ -129,10 +145,12 @@ public class ActingLineTriggerManager : MonoBehaviour
     }
     private void EndConversation()
     {
-        Debug.Log("끝났다");
+        actingLineUI.ShowResultPanel();
+        SoundManager.instance.PlayResult();
     }
     private void PlayerCase()
     {
+        actingLineUI.UpdateTimerUI(time_Max);
         DataManager.instance.SaveCurrentData();
         playerLineIndex++;
         isActiveMic = false;
@@ -159,7 +177,6 @@ public class ActingLineTriggerManager : MonoBehaviour
         npcLineIndex++;
         actingLineUI.UpdateUI(actingLineData.npcActingLines[npcLineIndex].dialogue, actingLineData.npcPrompts[npcLineIndex]);
         StartCoroutine(NPCClipCoroutine(actingLineData.npcActingLines[npcLineIndex].clip));
-        actingLineUI.UpdateTimerUI(time_Max);
     }
 
     private IEnumerator NPCClipCoroutine(AudioClip clip)
@@ -168,19 +185,6 @@ public class ActingLineTriggerManager : MonoBehaviour
         yield return new WaitForSeconds(clip.length);
         currentRole = Role.Player;
         ProceedToNextLine();
-    }
-
-    // 선택지 표시 (필요한 경우 구현)
-    public void ShowChoices(string choice1, string choice2)
-    {
-        actingLineUI.ShowChoices(choice1, choice2);
-    }
-    public void OnClickActingBox()
-    {
-        if (currentRole == Role.NPC)
-        {
-
-        }
     }
     public void SelectChoice(int choiceIndex)
     {
@@ -200,5 +204,11 @@ public class ActingLineTriggerManager : MonoBehaviour
         actingLineUI.timerPanel.SetActive(true);
         actingLineUI.UpdateUI(currentLine, prompt);
         actingLineUI.choicePanel.SetActive(false);
+    }
+    private void OnInaccurateSimilarity()
+    {
+        recordManager.InitWaveformMesh();
+        actingLineUI.UpdateTimerUI(time_Max);
+        SoundManager.instance.PlayNeedRepeat();
     }
 }
