@@ -69,7 +69,7 @@ public class EpisodeUI : MonoBehaviour
             GameManager.Instance.currentNPC = 0;
 
             // 게임 씬으로 전환
-            SceneManager.LoadScene("Real Copy"); 
+            SceneManager.LoadScene("GameActing"); 
         }
         else
         {
