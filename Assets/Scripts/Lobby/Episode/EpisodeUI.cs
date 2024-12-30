@@ -26,6 +26,7 @@ public class EpisodeUI : MonoBehaviour
 
         // 게임 시작 버튼에 리스너 추가
         gameStartButton.onClick.AddListener(OnGameStartButton);
+        episodeWindow.SetActive(false);
     }
 
     void GenerateButtons()
