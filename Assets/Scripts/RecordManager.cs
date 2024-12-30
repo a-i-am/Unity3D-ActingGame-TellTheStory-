@@ -86,6 +86,7 @@ public class RecordManager : MonoBehaviour
 
     public void StartRecording(float duration)
     {
+        SoundManager.instance.TurnOffBGM();
         meshRenderer.enabled = true;
         stopFlag = false;
         InitWaveformMesh();
@@ -150,6 +151,7 @@ public class RecordManager : MonoBehaviour
     }
     public void StopRecording()
     {
+        SoundManager.instance.TurnOnBGM();
         stopFlag = true;
 
         // 현재까지의 녹음 데이터를 자르기

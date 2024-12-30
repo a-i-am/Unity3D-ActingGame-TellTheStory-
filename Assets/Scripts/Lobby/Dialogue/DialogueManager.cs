@@ -58,6 +58,7 @@ public class DialogueManager : MonoBehaviour
             EndDialogue();
             return;
         }
+        SoundManager.instance.PlayButton(0);
 
         DialogueLine currentLine = lines.Dequeue();
 
@@ -65,6 +66,17 @@ public class DialogueManager : MonoBehaviour
         characterName.text = currentLine.character.name;
 
         StopAllCoroutines();
+
+        switch (currentLine.line)
+        {
+            case "나도 무도회에 가고싶어...":
+                SoundManager.instance.PlayNPC0_Dialogue(0);
+                break;
+            case "내 이야길 들어볼래?":
+                SoundManager.instance.PlayNPC0_Dialogue(1);
+                break;
+
+        }
 
         StartCoroutine(TypeSentence(currentLine));
     }
