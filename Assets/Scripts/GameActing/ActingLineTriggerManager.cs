@@ -86,6 +86,7 @@ public class ActingLineTriggerManager : MonoBehaviour
     //녹음 버튼을 눌렀을 때 호출할 메서드
     public void OnRecordButtonClick()
     {
+        SoundManager.instance.PlayButton(1);
         if (isActiveMic)
         {
             RecordManager.instance.StopRecording();

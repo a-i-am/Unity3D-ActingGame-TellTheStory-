@@ -51,6 +51,7 @@ public class EpisodeUI : MonoBehaviour
     // 버튼 클릭 시 호출될 메서드
     void OnEpisodeButtonClicked(EpisodeData.Episode episode)
     {
+        SoundManager.instance.PlaySelect();
         selectedEpisode = episode;  // 선택된 에피소드 저장
         storyInfoArea.SetActive(true);
 

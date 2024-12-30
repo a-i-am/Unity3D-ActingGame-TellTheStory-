@@ -18,6 +18,7 @@ public class ResultPanel : MonoBehaviour
     }
     public void GoToLobby()
     {
+        SoundManager.instance.PlayButton(0);
         SceneManager.LoadScene("Lobby");
     }
 }
