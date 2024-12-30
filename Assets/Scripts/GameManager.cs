@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -58,6 +59,11 @@ public class GameManager : MonoBehaviour
         float similarity = (float)matchingCount / maxWordCount;
         Debug.Log("Similarity : " + similarity);
         return similarity;
+    }
+
+    public void GoToHome()
+    {
+        SceneManager.LoadScene("Lobby");
     }
 
 }
