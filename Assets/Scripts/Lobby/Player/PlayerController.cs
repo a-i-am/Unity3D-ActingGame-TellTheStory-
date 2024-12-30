@@ -74,7 +74,14 @@ public class PlayerController : MonoBehaviour
         Vector3 targetMoveAmount = (forward * moveDir.z + right * moveDir.x) * walkSpeed;
 
         moveAmount = Vector3.SmoothDamp(moveAmount, targetMoveAmount, ref smoothMoveVelocity, .15f);
-
+        if (moveAmount != Vector3.zero)
+        {
+            SoundManager.instance.StartWalking();
+        }
+        else
+        {
+            SoundManager.instance.StopWalking();
+        }
         // Jump
         if (Input.GetButtonDown("Jump") && grounded)
         {

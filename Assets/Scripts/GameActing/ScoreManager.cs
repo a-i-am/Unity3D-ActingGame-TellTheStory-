@@ -37,6 +37,7 @@ public class ScoreManager : MonoBehaviour
 
     public void ChangeScore(float currentSimilarity, string line)
     {
+        SoundManager.instance.PlayGetScore();
         if (currentSimilarity < inaccurateSim)
         {
             inaccurateSim = currentSimilarity;

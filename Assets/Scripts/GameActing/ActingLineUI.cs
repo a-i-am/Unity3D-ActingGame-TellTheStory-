@@ -38,6 +38,7 @@ public class ActingLineUI : MonoBehaviour
         promptText.gameObject.SetActive(true);
         scorePanel.SetActive(true);
         remainTimeText.gameObject.SetActive(true);
+        SoundManager.instance.PlayButton(0);
     }
     // 대사와 감정 지시문을 UI에 업데이트하는 함수
     public void UpdateUI(string line, string linePrompts)
