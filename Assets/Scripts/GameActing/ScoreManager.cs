@@ -26,6 +26,13 @@ public class ScoreManager : MonoBehaviour
     {
         instance = this;
     }
+    
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    private static void Init()
+    {
+        instance = null;
+    }
+
     public void InitAll(int playerLineNum)
     {
         this.playLineNum = playerLineNum;
@@ -93,7 +100,7 @@ public class ScoreManager : MonoBehaviour
     private IEnumerator GraduallyAscendScore(float from, float to)
     {
         float currentScore = from;
-        float stepTime = 0.1f; // 숫자가 한 번 바뀔 때 걸리는 시간
+        float stepTime = 0.03f; // 숫자가 한 번 바뀔 때 걸리는 시간
         float stepAmount = 0.1f; // 점수 증가 단위
 
         while (currentScore < to)

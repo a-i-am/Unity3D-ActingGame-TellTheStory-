@@ -68,8 +68,8 @@ public class ActingLineTriggerManager : MonoBehaviour
         yield return new WaitForSeconds(1f + second);
         recordManager.meshRenderer.enabled = false;
         isPlayingRecorded = false;
-        
-        if (score>=0.3f)
+
+        if (score >= 0.3f)
         {
             scoreManager.ChangeScore(score, sttResult);
             ProceedToNextLine();
@@ -78,8 +78,6 @@ public class ActingLineTriggerManager : MonoBehaviour
         {
             OnInaccurateSimilarity();
         }
-        
-        
     }
 
 

@@ -45,17 +45,13 @@ public class SoundManager : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(gameObject);
         }
-        bgmSource = GetComponent<AudioSource>();
         SceneManager.sceneLoaded += SceneManager_sceneLoaded;
-    }
-
-    private void Start()
-    {
-        bgmSource = GetComponent<AudioSource>();
     }
 
     private void SceneManager_sceneLoaded(Scene arg0, LoadSceneMode arg1)
     {
+        if (!bgmSource)
+            return;
         currentVolume = 0.5f;
         switch (arg0.name)
         {

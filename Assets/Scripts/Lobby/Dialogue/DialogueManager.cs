@@ -7,34 +7,44 @@ using UnityEngine.TextCore.Text;
 
 public class DialogueManager : MonoBehaviour
 {
-    public static DialogueManager Instance;
+    public static DialogueManager instance;
 
-    public Image charachterIcon;
-    public TextMeshProUGUI characterName;
-    public TextMeshProUGUI dialogueArea;
-    public GameObject dialogueTemplate;
-    public GameObject episodeWindow;
+    [SerializeField] Image charachterIcon;
+    [SerializeField] TextMeshProUGUI characterName;
+    [SerializeField] TextMeshProUGUI dialogueArea;
+    [SerializeField] GameObject dialogueTemplate;
+    [SerializeField] GameObject episodeWindow;
+    [SerializeField] Animator animator;
 
     private Queue<DialogueLine> lines;
+    private Coroutine typingCoroutine; // 코루틴 핸들 추가
+    private float typingSpeed = 0.2f;
 
     public bool isDialogueActive = false;
-    public float typingSpeed = 0.2f;
-
-    public Animator animator;
+   
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    private static void Init()
+    {
+        instance = null; // 씬 시작 전에 항상 초기화
+    }
+    private void Awake()
+    {
+        instance = this;
+    }
 
     private void Start()
     {
-        if (Instance == null)
-            Instance = this;
+        if (instance == null)
+            instance = this;
 
-        lines = new Queue<DialogueLine>(); // 큐 초기화
-        
         dialogueTemplate.SetActive(false);
-        
     }
 
     public void StartDialogue(Dialogue dialogue)
     {
+        // 대화 시작 시 큐 초기화 및 크기 설정
+        lines = new Queue<DialogueLine>(dialogue.dialogueLines);
+
         dialogueTemplate.SetActive(true);
         isDialogueActive = true;
 
@@ -48,7 +58,6 @@ public class DialogueManager : MonoBehaviour
         }
 
         DisplayNextDialogueLine();
-
     }
 
     public void DisplayNextDialogueLine()
@@ -65,7 +74,10 @@ public class DialogueManager : MonoBehaviour
         charachterIcon.sprite = currentLine.character.icon;
         characterName.text = currentLine.character.name;
 
-        StopAllCoroutines();
+        if (typingCoroutine != null)
+        {
+            StopCoroutine(typingCoroutine);
+        }
 
         switch (currentLine.line)
         {
@@ -78,7 +90,7 @@ public class DialogueManager : MonoBehaviour
 
         }
 
-        StartCoroutine(TypeSentence(currentLine));
+        typingCoroutine = StartCoroutine(TypeSentence(currentLine));
     }
 
     IEnumerator TypeSentence(DialogueLine dialogueLine)
@@ -87,7 +99,7 @@ public class DialogueManager : MonoBehaviour
         foreach (char letter in dialogueLine.line.ToCharArray())
         {
             dialogueArea.text += letter;
-            yield return new WaitForSeconds(typingSpeed);
+            yield return new WaitForSecondsRealtime(typingSpeed);
         }
     }
 

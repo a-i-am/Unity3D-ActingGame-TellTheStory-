@@ -40,7 +40,7 @@ public class DialogueTrigger : MonoBehaviour
 
     public void TriggerDialogue()
     {
-        DialogueManager.Instance.StartDialogue(dialogue);
+        DialogueManager.instance.StartDialogue(dialogue);
     }
 
     void Update()
@@ -48,7 +48,7 @@ public class DialogueTrigger : MonoBehaviour
         Collider[] colliderArray = Physics.OverlapSphere(transform.position, interactRange);
         foreach (Collider collider in colliderArray)
         {
-            if (!DialogueManager.Instance.isDialogueActive && collider.CompareTag("Player"))
+            if (!DialogueManager.instance.isDialogueActive && collider.CompareTag("Player"))
             {
                 SetHeadUI();
                 if (Input.GetKeyDown(KeyCode.Z))
@@ -85,7 +85,8 @@ public class DialogueTrigger : MonoBehaviour
     }
     private void HideHeadUI()
     {
-        headUI.SetActive(false);
+        if (headUI)
+            headUI.SetActive(false);
 
     }
 

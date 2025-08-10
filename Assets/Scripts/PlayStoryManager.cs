@@ -11,11 +11,20 @@ public class PlayStoryManager : MonoBehaviour
     public static PlayStoryManager instance;
     private AudioSource audioSource;
 
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    private static void Init()
+    {
+        instance = null; // 씬 시작 전에 항상 초기화
+    }
+
     private void Awake()
     {
         instance = this;
         audioSource = GetComponent<AudioSource>();
     }
+
+
+
     [ContextMenu("PlayStory")]
     public void PlayStoryTest()
     {
@@ -23,6 +32,7 @@ public class PlayStoryManager : MonoBehaviour
     }
     public void PlayStory(int npcId, int actId)
     {
+        SoundManager.instance.TurnOffBGM();
         AudioClip[] recordedClips = DataManager.instance.GetRecoredClips(npcId, actId);
         AudioClip[] npcClips = DataManager.instance.GetNPCClips(npcId, actId);
         Role startRole = GetStartRole(npcId, actId);
@@ -98,5 +108,10 @@ public class PlayStoryManager : MonoBehaviour
             Debug.LogError($"Invalid Role: {roleStr}. Defaulting to Role.Player.");
             return Role.Player; // 기본값으로 Role.Player 반환
         }
+    }
+    public void StopPlay()
+    {
+        SoundManager.instance.TurnOnBGM();
+        audioSource.Stop();
     }
 }

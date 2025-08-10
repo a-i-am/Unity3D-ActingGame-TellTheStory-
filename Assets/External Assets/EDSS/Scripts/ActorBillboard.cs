@@ -20,6 +20,17 @@ namespace EightDirectionalSpriteSystem
         public delegate void BeforeRenderBillboardEvent();
 
         public BeforeRenderBillboardEvent beforeRenderBillboardEvent;
+        private enum Direction
+        {
+            Down = 0,
+            DownLeft = 1,
+            Left = 2,
+            UpLeft = 3,
+            Up = 4,
+            UpRight = 5,
+            Right = 6,
+            DownRight = 7
+        }
 
         public bool IsPlaying
         {
@@ -180,35 +191,31 @@ namespace EightDirectionalSpriteSystem
                 return;
             }
 
-            if (beforeRenderBillboardEvent != null)
-                beforeRenderBillboardEvent();
+            bool isDialogueActive = DialogueManager.instance != null && DialogueManager.instance.isDialogueActive;
 
-            // 처리된 방향키 입력을 추가하여 8방향 + 대각선 계산
-                animFrameDirection = 0;
+            beforeRenderBillboardEvent?.Invoke();
 
-            if (currentAnimation.AnimType == ActorAnimation.AnimDirType.EightDirections)
+            Direction animDir = Direction.Down;
+
+            // 8방향 처리 + 대화 중이 아닐 때만 입력 반영
+            if (currentAnimation.AnimType == ActorAnimation.AnimDirType.EightDirections && !isDialogueActive)
             {
-                // 입력된 방향에 따라 애니메이션 프레임을 결정
-                if (Input.GetKey(KeyCode.UpArrow) && Input.GetKey(KeyCode.LeftArrow))
-                    animFrameDirection = 3; // Up-Left -> 3번 (대각선 방향)
-                else if (Input.GetKey(KeyCode.UpArrow) && Input.GetKey(KeyCode.RightArrow))
-                    animFrameDirection = 5; // Up-Right -> 5번 (대각선 방향)
-                else if (Input.GetKey(KeyCode.DownArrow) && Input.GetKey(KeyCode.LeftArrow))
-                    animFrameDirection = 1; // Down-Left -> 1번 (대각선 방향)
-                else if (Input.GetKey(KeyCode.DownArrow) && Input.GetKey(KeyCode.RightArrow))
-                    animFrameDirection = 7; // Down-Right -> 7번 (대각선 방향)
-                else if (Input.GetKey(KeyCode.UpArrow))
-                    animFrameDirection = 4; // Up -> 4번 (위 방향)
-                else if (Input.GetKey(KeyCode.DownArrow))
-                    animFrameDirection = 0; // Down -> 0번 (아래 방향)
-                else if (Input.GetKey(KeyCode.LeftArrow))
-                    animFrameDirection = 2; // Left -> 2번 (왼쪽 방향)
-                else if (Input.GetKey(KeyCode.RightArrow))
-                    animFrameDirection = 6; // Right -> 6번 (오른쪽 방향)
+                bool up = Input.GetKey(KeyCode.UpArrow);
+                bool down = Input.GetKey(KeyCode.DownArrow);
+                bool left = Input.GetKey(KeyCode.LeftArrow);
+                bool right = Input.GetKey(KeyCode.RightArrow);
+
+                if (up && left) animDir = Direction.UpLeft;
+                else if (up && right) animDir = Direction.UpRight;
+                else if (down && left) animDir = Direction.DownLeft;
+                else if (down && right) animDir = Direction.DownRight;
+                else if (up) animDir = Direction.Up;
+                else if (left) animDir = Direction.Left;
+                else if (right) animDir = Direction.Right;
+                // 기본값 Down은 그대로 유지
             }
 
-            Sprite sprite = currentAnimation.GetSprite(currentFrameIndex, animFrameDirection);
-            spriteRenderer.sprite = sprite;
+            spriteRenderer.sprite = currentAnimation.GetSprite(currentFrameIndex, (int)animDir);
         }
 
     }

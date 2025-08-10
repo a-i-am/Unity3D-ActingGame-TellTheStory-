@@ -104,6 +104,7 @@ public class ActingLineUI : MonoBehaviour
     }
     public void ShowResultPanel()
     {
+        resultPanel.gameObject.SetActive(true);
         ScoreManager.instance.GetResult(out float score, out string accurateStr, out string inaccurateStr);
         resultPanel.SetResult(score, accurateStr, inaccurateStr);
     }

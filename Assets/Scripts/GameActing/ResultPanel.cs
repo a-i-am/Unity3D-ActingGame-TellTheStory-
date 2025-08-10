@@ -13,8 +13,8 @@ public class ResultPanel : MonoBehaviour
     public void SetResult(float score, string accurateStr, string inaccurateStr)
     {
         similarityText.text = $"대사 일치도 : {score * 100:F0}%";
-        accurateText.text = $"가장 정확한 문장 : {accurateText}";
-        inaccurateText.text = $"가장 부정확한 문장 : {inaccurateText}";
+        accurateText.text = $"가장 정확한 문장 : {accurateStr}";
+        inaccurateText.text = $"가장 부정확한 문장 : {inaccurateStr}";
     }
     public void GoToLobby()
     {

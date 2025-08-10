@@ -1,4 +1,4 @@
-﻿
+
 //=============================================================================
 //  ActorFrame
 //  by Mariusz Skowroński from Healthbar Games (http://healthbargames.pl)
