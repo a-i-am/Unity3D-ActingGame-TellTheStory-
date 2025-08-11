@@ -11,9 +11,9 @@ public class EntrancePanel : MonoBehaviour
     [SerializeField] TextMeshProUGUI summaryText;
     private void Start()
     {
-        EpisodeData currentEpisode = episodeDataArr[GameManager.Instance.currentNPC];
-        titleText.text = currentEpisode.storyInfo.episodes[GameManager.Instance.currentAct].episodeTitle;
-        summaryText.text = currentEpisode.storyInfo.episodes[GameManager.Instance.currentAct].summary;
+        EpisodeData currentEpisode = episodeDataArr[GameManager.instance.currentNPC];
+        titleText.text = currentEpisode.storyInfo.episodes[GameManager.instance.currentAct].episodeTitle;
+        summaryText.text = currentEpisode.storyInfo.episodes[GameManager.instance.currentAct].summary;
     }
     public void OnStartButtonClick()
     {

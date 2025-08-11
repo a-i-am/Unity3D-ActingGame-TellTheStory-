@@ -7,17 +7,24 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance;
+    public static GameManager instance;
     public int currentNPC;
     public int currentAct;//NPC와 Act는 게임 씬에서 들어갔을 때 어떤 데이터를 불러올지 결정한다.
     public int[] npcCurrentLine;
     public int[] npcCurrentRole;
     public int[] npcFinished;
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    private static void Init()
+    {
+        instance = null;
+    }
+
     void Awake()
     {
-        if (Instance == null)
+        if (instance == null)
         {
-            Instance = this;
+            instance = this;
             DontDestroyOnLoad(gameObject);
         }
         else

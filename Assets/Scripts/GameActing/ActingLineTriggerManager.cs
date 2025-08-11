@@ -28,6 +28,12 @@ public class ActingLineTriggerManager : MonoBehaviour
     private string currentLine;
     private string otherLine;
 
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    private static void Init()
+    {
+        instance = null;
+    }
+
     private void Awake()
     {
         if (instance)
@@ -55,7 +61,7 @@ public class ActingLineTriggerManager : MonoBehaviour
     public void OnSttResult(string sttResult, AudioClip clip)
     {
         // STT 결과를 UI에 타이핑 효과로 출력
-        float score = GameManager.Instance.CompareTwoDialogue(currentLine, sttResult);
+        float score = GameManager.instance.CompareTwoDialogue(currentLine, sttResult);
         actingLineUI.UpdateSTTResult(sttResult);
         //Clip
         isPlayingRecorded = true;

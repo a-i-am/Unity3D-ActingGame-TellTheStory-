@@ -1,13 +1,19 @@
-﻿//=============================================================================
+//=============================================================================
 //  ActorBillboard
 //  by Mariusz Skowroński from Healthbar Games (http://healthbargames.pl)
 //  This class represents billboard - actor's visual part that is always
 //  orientated to face current camera.
 //=============================================================================
 
+//=============================================================================
+//  리팩토링 (Bit Flag  + WASD/Key Input 지원)
+//=============================================================================
+
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Profiling;
 using UnityEngine;
+
 
 namespace EightDirectionalSpriteSystem
 {
@@ -18,8 +24,8 @@ namespace EightDirectionalSpriteSystem
         public Transform actorTransform;
 
         public delegate void BeforeRenderBillboardEvent();
-
         public BeforeRenderBillboardEvent beforeRenderBillboardEvent;
+
         private enum Direction
         {
             Down = 0,
@@ -32,20 +38,20 @@ namespace EightDirectionalSpriteSystem
             DownRight = 7
         }
 
-        public bool IsPlaying
+        [System.Flags]
+        private enum InputFlags
         {
-            get { return isPlaying; }
+            None = 0,
+            Up = 1 << 0,
+            Down = 1 << 1,
+            Left = 1 << 2,
+            Right = 1 << 3
         }
 
-        public bool IsPaused
-        {
-            get { return isPaused; }
-        }
+        public bool IsPlaying => isPlaying;
+        public bool IsPaused => isPaused;
+        public ActorAnimation CurrentAnimation => currentAnimation;
 
-        public ActorAnimation CurrentAnimation
-        {
-            get { return currentAnimation; }
-        }
 
         private Transform myTransform;
         private SpriteRenderer spriteRenderer;
@@ -59,8 +65,26 @@ namespace EightDirectionalSpriteSystem
 
         public int animFrameDirection = 0;
 
-
-
+        private static readonly Direction[] directionTable = new Direction[16]
+{
+            Direction.Down,      // 0000
+            Direction.Up,        // 0001
+            Direction.Down,      // 0010
+            Direction.Up,        // 0011
+            Direction.Left,      // 0100
+            Direction.UpLeft,    // 0101
+            Direction.Left,      // 0110
+            Direction.UpLeft,    // 0111
+            Direction.Right,     // 1000
+            Direction.UpRight,   // 1001
+            Direction.DownRight, // 1010
+            Direction.UpRight,   // 1011
+            Direction.Right,     // 1100
+            Direction.UpRight,   // 1101
+            Direction.DownRight, // 1110
+            Direction.UpRight    // 1111
+};
+        private static readonly ProfilerMarker k_UpdateSpriteMarker = new ProfilerMarker("UpdateSprite");
         public void SetActorForwardVector(Vector3 actorForward)
         {
             actorForwardVector = actorForward;
@@ -86,18 +110,12 @@ namespace EightDirectionalSpriteSystem
 
         public void PauseAnimation()
         {
-            if (isPlaying)
-            {
-                isPaused = true;
-            }
+            if (isPlaying) isPaused = true;
         }
 
         public void ResumeAnimation()
         {
-            if (isPlaying)
-            {
-                isPaused = false;
-            }
+            if (isPlaying) isPaused = false;
         }
 
         public void StopAnimation()
@@ -126,12 +144,24 @@ namespace EightDirectionalSpriteSystem
                 actorForwardVector = actorTransform.forward;
             }
 
-            if (isPlaying == false || isPaused == true)
+            if (!isPlaying || isPaused)
                 return;
 
             frameChangeDelay -= Time.deltaTime;
             if (frameChangeDelay > 0.0f)
                 return;
+
+            if (currentAnimation == null)
+            {
+                Debug.LogWarning("No animation set for ActorBillboard.");
+                return;
+            }
+
+            if (spriteRenderer == null)
+            {
+                Debug.LogWarning("SpriteRenderer is not assigned.");
+                return;
+            }
 
             if (playDirection > 0)
             {
@@ -184,39 +214,35 @@ namespace EightDirectionalSpriteSystem
                 Debug.LogWarning("No animation set for ActorBillboard.");
                 return;
             }
-
             if (spriteRenderer == null)
             {
                 Debug.LogWarning("SpriteRenderer is not assigned.");
                 return;
             }
-
             bool isDialogueActive = DialogueManager.instance != null && DialogueManager.instance.isDialogueActive;
-
             beforeRenderBillboardEvent?.Invoke();
-
             Direction animDir = Direction.Down;
-
-            // 8방향 처리 + 대화 중이 아닐 때만 입력 반영
             if (currentAnimation.AnimType == ActorAnimation.AnimDirType.EightDirections && !isDialogueActive)
             {
-                bool up = Input.GetKey(KeyCode.UpArrow);
-                bool down = Input.GetKey(KeyCode.DownArrow);
-                bool left = Input.GetKey(KeyCode.LeftArrow);
-                bool right = Input.GetKey(KeyCode.RightArrow);
+                InputFlags flags = InputFlags.None;
 
-                if (up && left) animDir = Direction.UpLeft;
-                else if (up && right) animDir = Direction.UpRight;
-                else if (down && left) animDir = Direction.DownLeft;
-                else if (down && right) animDir = Direction.DownRight;
-                else if (up) animDir = Direction.Up;
-                else if (left) animDir = Direction.Left;
-                else if (right) animDir = Direction.Right;
-                // 기본값 Down은 그대로 유지
+                if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W)) flags |= InputFlags.Up;
+                if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S)) flags |= InputFlags.Down;
+                if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A)) flags |= InputFlags.Left;
+                if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D)) flags |= InputFlags.Right;
+
+                animDir = directionTable[(int)flags];
             }
 
-            spriteRenderer.sprite = currentAnimation.GetSprite(currentFrameIndex, (int)animDir);
+            animFrameDirection = (int)animDir;
+            spriteRenderer.sprite = currentAnimation.GetSprite(currentFrameIndex, animFrameDirection);
         }
 
     }
+
+
+
+
+
+
 }

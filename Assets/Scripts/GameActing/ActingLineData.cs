@@ -104,7 +104,7 @@ public class ActingLineData : ScriptableObject
             }
         }
 
-        AudioClip[] clips = DataManager.instance.GetNPCClips(GameManager.Instance.currentNPC, GameManager.Instance.currentAct);
+        AudioClip[] clips = DataManager.instance.GetNPCClips(GameManager.instance.currentNPC, GameManager.instance.currentAct);
         npcActingLines = new LineSet[npcActingLinesList.Count];
         for (int i = 0; i < npcActingLinesList.Count; i++)
         {

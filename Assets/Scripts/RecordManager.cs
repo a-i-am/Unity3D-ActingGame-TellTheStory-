@@ -49,7 +49,7 @@ public class RecordManager : MonoBehaviour
     }
     private void Start()
     {
-        gameManager = GameManager.Instance;
+        gameManager = GameManager.instance;
     }
     public void InitWaveformMesh()
     {

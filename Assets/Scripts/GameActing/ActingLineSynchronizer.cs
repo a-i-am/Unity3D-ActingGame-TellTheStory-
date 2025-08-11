@@ -11,7 +11,7 @@ public class ActingLineSynchronizer : MonoBehaviour
     {
         if (actingLineData != null)
         {
-            actingLineData.actingLineFilePath = $"Assets/Data/NPC{GameManager.Instance.currentNPC}/Act{GameManager.Instance.currentAct}.txt";
+            actingLineData.actingLineFilePath = $"Assets/Data/NPC{GameManager.instance.currentNPC}/Act{GameManager.instance.currentAct}.txt";
             actingLineData.ParseActingLineFile();  // 대사 파일을 런타임에 파싱
             Debug.Log("Acting Line File Parsed at Runtime!");
         }

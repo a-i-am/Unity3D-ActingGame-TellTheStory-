@@ -7,6 +7,11 @@ public class DataManager : MonoBehaviour
 {
     public static DataManager instance;
 
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    private static void Init()
+    {
+        instance = null;
+    }
     private void Awake()
     {
         if (instance)
@@ -99,15 +104,15 @@ public class DataManager : MonoBehaviour
     }
     public void SaveCurrentData()
     {
-        int npcId = GameManager.Instance.currentNPC;
+        int npcId = GameManager.instance.currentNPC;
 
         Role currentRole = ActingLineTriggerManager.instance.currentRole;
         int roleIndex = currentRole == Role.Player ? 0 : 1;
 
         int npcLine = roleIndex == 0 ? ActingLineTriggerManager.instance.playerLineIndex : ActingLineTriggerManager.instance.npcLineIndex;
 
-        GameManager.Instance.npcCurrentLine[npcId] = npcLine;
-        GameManager.Instance.npcCurrentRole[npcId] = roleIndex;
+        GameManager.instance.npcCurrentLine[npcId] = npcLine;
+        GameManager.instance.npcCurrentRole[npcId] = roleIndex;
 
         PlayerPrefs.SetInt($"NPC{npcId}_Line", npcLine);
         PlayerPrefs.SetInt($"NPC{npcId}_Role", roleIndex);
@@ -117,22 +122,22 @@ public class DataManager : MonoBehaviour
     }
     public void OnNpcFinished(int npcId)
     {
-        GameManager.Instance.npcFinished[npcId] = 1;//1은 끝났다는 의미 => 재생이 가능하다.
+        GameManager.instance.npcFinished[npcId] = 1;//1은 끝났다는 의미 => 재생이 가능하다.
         PlayerPrefs.SetInt($"NPC{npcId}_Finished", 1);
     }
     public void OnNpcNewGame(int npcId)
     {
-        GameManager.Instance.npcFinished[npcId] = 0;//0은 진행 중이거나 시작 전이라는 의미 => 재생이 불가능하다.
+        GameManager.instance.npcFinished[npcId] = 0;//0은 진행 중이거나 시작 전이라는 의미 => 재생이 불가능하다.
         PlayerPrefs.SetInt($"NPC{npcId}_Finished", 0);
     }
     public void LoadGameData()
     {
         for (int i = 0; i < 4; i++)
         {
-            GameManager.Instance.npcCurrentLine[i] = PlayerPrefs.GetInt($"NPC{i}_Line", 0);
-            GameManager.Instance.npcCurrentRole[i] = PlayerPrefs.GetInt($"NPC{i}_Role", 0);
-            GameManager.Instance.npcFinished[i] = PlayerPrefs.GetInt($"NPC{i}_Finished", 0);
-            Debug.Log($"[LoadGameData] NPC : {i}, Loaded Line : {GameManager.Instance.npcCurrentLine[i]}, Loaded Role: {GameManager.Instance.npcCurrentRole[i]}");
+            GameManager.instance.npcCurrentLine[i] = PlayerPrefs.GetInt($"NPC{i}_Line", 0);
+            GameManager.instance.npcCurrentRole[i] = PlayerPrefs.GetInt($"NPC{i}_Role", 0);
+            GameManager.instance.npcFinished[i] = PlayerPrefs.GetInt($"NPC{i}_Finished", 0);
+            Debug.Log($"[LoadGameData] NPC : {i}, Loaded Line : {GameManager.instance.npcCurrentLine[i]}, Loaded Role: {GameManager.instance.npcCurrentRole[i]}");
         }
     }
     public void NewGame()

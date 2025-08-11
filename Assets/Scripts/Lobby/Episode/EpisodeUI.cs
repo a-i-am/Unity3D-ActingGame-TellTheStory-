@@ -66,8 +66,8 @@ public class EpisodeUI : MonoBehaviour
         if (selectedEpisode != null)
         {
             // 게임에 필요한 데이터 초기화
-            GameManager.Instance.currentAct = episodeData.storyInfo.episodes.IndexOf(selectedEpisode);
-            GameManager.Instance.currentNPC = 0;
+            GameManager.instance.currentAct = episodeData.storyInfo.episodes.IndexOf(selectedEpisode);
+            GameManager.instance.currentNPC = 0;
 
             // 게임 씬으로 전환
             SceneManager.LoadScene("GameActing"); 
