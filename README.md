@@ -9,7 +9,6 @@
 - 개발 목적 : 컴투스 글로벌 게임개발 공모전 '컴:온' 2024 제출
 - 개발 기간 : 17일(2024.12.14 ~ 2024.12.30)
 - 참여 인원 : 프로그래밍 2인
-- Github :  https://github.com/a-i-am/Unity3D-ActingGame-TellTheStory-
 
 :: 사용 기술 ::
 - 게임 엔진 : Unity 3D 
