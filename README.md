@@ -19,9 +19,10 @@
 [첨부 이미지 원본 파일] : [Tell The Story.pdf](https://github.com/user-attachments/files/25696968/Tell.The.Story.pdf)
 
 [프로젝트 설명 자료]
-<img width="1701" height="945" alt="슬라이드1" src="https://github.com/user-attachments/assets/858b46a5-2666-4034-82e7-1bc20939a408" />
-<img width="1701" height="945" alt="슬라이드2" src="https://github.com/user-attachments/assets/21e17e8a-e7ee-4b92-9946-c180fcf599e3" />
+
 <img width="1701" height="945" alt="슬라이드3" src="https://github.com/user-attachments/assets/58fe8aac-946d-4108-bb95-a646396ed943" />
+<img width="1701" height="945" alt="슬라이드2" src="https://github.com/user-attachments/assets/21e17e8a-e7ee-4b92-9946-c180fcf599e3" />
+<img width="1701" height="945" alt="슬라이드1" src="https://github.com/user-attachments/assets/858b46a5-2666-4034-82e7-1bc20939a408" />
 <img width="1701" height="945" alt="슬라이드4" src="https://github.com/user-attachments/assets/631e3cfe-1b9f-492a-a2c7-10fcf3c5e6d2" />
 <img width="1701" height="945" alt="슬라이드5" src="https://github.com/user-attachments/assets/4f59c5c5-54d3-4668-9d30-20ca14d45a5c" />
 <img width="1701" height="945" alt="슬라이드6" src="https://github.com/user-attachments/assets/920aa635-e479-4c22-82a6-84cef9123e63" />
