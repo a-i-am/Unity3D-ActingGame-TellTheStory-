@@ -15,8 +15,7 @@
 - STT API :  NAVER CLOVA Speech
 - TTS 보이스 : 볼리(VOLI), 
 - 이미지 생성(타이틀 로고, 메인 게임 배경)  : OpenAI Dall-E in Chat-GPT, Microsoft Copilot(Edge Copilot)
-----------------------------------------------------------------------------------------------------------
-
+- 
 [프로젝트 설명 자료]
 <img width="1701" height="945" alt="슬라이드1" src="https://github.com/user-attachments/assets/858b46a5-2666-4034-82e7-1bc20939a408" />
 <img width="1701" height="945" alt="슬라이드2" src="https://github.com/user-attachments/assets/21e17e8a-e7ee-4b92-9946-c180fcf599e3" />
