@@ -16,8 +16,7 @@
 - TTS 보이스 : 볼리(VOLI), 
 - 이미지 생성(타이틀 로고, 메인 게임 배경)  : OpenAI Dall-E in Chat-GPT, Microsoft Copilot(Edge Copilot)
 -----------------------------------------------------------------------------------------------------------
-[첨부 이미지 원본 파일]
-[Tell The Story.pdf](https://github.com/user-attachments/files/25696968/Tell.The.Story.pdf)
+[첨부 이미지 원본 파일] : [Tell The Story.pdf](https://github.com/user-attachments/files/25696968/Tell.The.Story.pdf)
 
 [프로젝트 설명 자료]
 <img width="1701" height="945" alt="슬라이드1" src="https://github.com/user-attachments/assets/858b46a5-2666-4034-82e7-1bc20939a408" />
