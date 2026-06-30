@@ -9,16 +9,16 @@ public class ActingLineTriggerManager : MonoBehaviour
 
     [SerializeField] RecordManager recordManager;
     [SerializeField] ScoreManager scoreManager;
-    [SerializeField] ActingLineData actingLineData;  // ActingLineData 참조
-    [SerializeField] ActingLineUI actingLineUI;      // UI 관리
-    [SerializeField] STTManager sttManager;          // STT 관리 (STTManager로 대체)
+    [SerializeField] ActingLineData actingLineData;
+    [SerializeField] ActingLineUI actingLineUI;
+    [SerializeField] STTManager sttManager;
     [SerializeField] ActingLineSynchronizer synchronizer;
     [SerializeField] AudioSource audioSource;
-    public Role currentRole;   // 현재 턴의 역할 (NPC/Player)
-    public int playerLineIndex = -1;       // 현재 대사 인덱스
-    public int npcLineIndex = -1;       // 현재 대사 인덱스
+    public Role currentRole;
+    public int playerLineIndex = -1;
+    public int npcLineIndex = -1;
 
-    private float time_Max = 10f;            // 타이머 최대 시간
+    private float time_Max = 10f;
 
     private Coroutine npcClipCoroutine;
     private Coroutine remainTimeCoroutine;
@@ -54,16 +54,16 @@ public class ActingLineTriggerManager : MonoBehaviour
             return;
         }
         scoreManager.InitAll(actingLineData.playerActingLines.Length);
-        // STT 결과 콜백 연결
+
         recordManager.onSttResult += OnSttResult;
     }
-    // STT 결과를 처리하여 대사 진행
+
     public void OnSttResult(string sttResult, AudioClip clip)
     {
-        // STT 결과를 UI에 타이핑 효과로 출력
+
         float score = GameManager.instance.CompareTwoDialogue(currentLine, sttResult);
         actingLineUI.UpdateSTTResult(sttResult);
-        //Clip
+
         isPlayingRecorded = true;
         audioSource.PlayOneShot(clip);
         currentRole = Role.NPC;
@@ -87,7 +87,7 @@ public class ActingLineTriggerManager : MonoBehaviour
     }
 
 
-    //녹음 버튼을 눌렀을 때 호출할 메서드
+
     public void OnRecordButtonClick()
     {
         SoundManager.instance.PlayButton(1);
@@ -101,7 +101,7 @@ public class ActingLineTriggerManager : MonoBehaviour
         else
         {
             RecordManager.instance.StartRecording(time_Max);
-            actingLineUI.UpdateTimerUI(time_Max); // 초기 타이머 값 UI로 전달
+            actingLineUI.UpdateTimerUI(time_Max);
             remainTimeCoroutine = StartCoroutine(ShowRemainTimeCoroutine(time_Max));
             actingLineUI.sttText.text = string.Empty;
             isActiveMic = true;
@@ -113,23 +113,23 @@ public class ActingLineTriggerManager : MonoBehaviour
 
         while (remainingTime > 0)
         {
-            // UI 업데이트
+
             actingLineUI.UpdateTimerUI(remainingTime);
 
-            // 한 프레임 대기
+
             yield return null;
 
-            // 경과 시간 계산
+
             remainingTime -= Time.deltaTime;
         }
 
-        // 시간이 다 지나면 0으로 업데이트
+
         actingLineUI.UpdateTimerUI(0);
 
-        // 코루틴 종료
+
     }
 
-    // 대사 진행 (다음 대사로 넘어가기)
+
     public void ProceedToNextLine()
     {
         if (actingLineData.npcActingLines.Length - 1 == npcLineIndex && actingLineData.playerActingLines.Length - 1 == playerLineIndex)

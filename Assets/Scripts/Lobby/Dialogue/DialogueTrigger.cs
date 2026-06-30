@@ -26,14 +26,14 @@ public class Dialogue
 public class DialogueTrigger : MonoBehaviour
 {
     public Dialogue dialogue;
-    public float interactRange = 2f; // 상호작용 범위
+    public float interactRange = 2f;
     public GameObject headUI;
 
     private Camera mainCamera;
 
     private void Start()
     {
-        // 메인 카메라를 캐싱
+
         mainCamera = Camera.main;
         HideHeadUI();
     }
@@ -66,19 +66,19 @@ public class DialogueTrigger : MonoBehaviour
         if (headUI != null && mainCamera != null)
         {
             headUI.SetActive(true);
-            // 3D 월드 좌표를 스크린 좌표로 변환
+
             Vector3 screenPosition = mainCamera.WorldToScreenPoint(transform.position);
 
-            // 변환된 스크린 좌표가 카메라의 앞쪽에 있는지 확인
+
             if (screenPosition.z > 0)
             {
-                // 스크린 좌표를 headUI의 위치로 설정
+
                 headUI.transform.position = screenPosition + new Vector3(0f,180f,0f);
-                headUI.SetActive(true); // UI 활성화
+                headUI.SetActive(true);
             }
             else
             {
-                // 카메라 뒤에 있으면 비활성화
+
                 headUI.SetActive(false);
             }
         }
@@ -92,7 +92,7 @@ public class DialogueTrigger : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        // 상호작용 범위를 시각적으로 표시
+
         Gizmos.color = new Color(1, 0, 0, 0.5f);
         Gizmos.DrawSphere(transform.position, interactRange);
     }

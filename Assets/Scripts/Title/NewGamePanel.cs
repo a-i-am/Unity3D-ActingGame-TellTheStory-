@@ -8,7 +8,7 @@ public class NewGamePanel : MonoBehaviour
     public void OnConfirmButtonClick()
     {
         DataManager.instance.NewGame();
-        SceneManager.LoadScene("Lobby");   
+        SceneManager.LoadScene("Lobby");
 
     }
     public void OnCancelButtonClick()

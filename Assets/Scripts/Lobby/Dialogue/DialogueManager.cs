@@ -17,15 +17,15 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] Animator animator;
 
     private Queue<DialogueLine> lines;
-    private Coroutine typingCoroutine; // 코루틴 핸들 추가
+    private Coroutine typingCoroutine;
     private float typingSpeed = 0.2f;
 
     public bool isDialogueActive = false;
-   
+
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void Init()
     {
-        instance = null; // 씬 시작 전에 항상 초기화
+        instance = null;
     }
     private void Awake()
     {
@@ -42,7 +42,7 @@ public class DialogueManager : MonoBehaviour
 
     public void StartDialogue(Dialogue dialogue)
     {
-        // 대화 시작 시 큐 초기화 및 크기 설정
+
         lines = new Queue<DialogueLine>(dialogue.dialogueLines);
 
         dialogueTemplate.SetActive(true);

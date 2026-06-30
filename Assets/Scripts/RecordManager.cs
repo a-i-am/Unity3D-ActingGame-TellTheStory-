@@ -11,12 +11,12 @@ public class RecordManager : MonoBehaviour
     public static RecordManager instance;
 
     [Header("STT Settings")]
-    private const string CLIENT_ID = "fyyr2a8p6n";
-    private const string CLIENT_SECRET = "mMxokw0RFBtyVJZ9qXFM7jk9P16NqfTIpXP5XSgI";
+    private static readonly string ClientId = Environment.GetEnvironmentVariable("NAVER_CLOVA_CLIENT_ID");
+    private static readonly string ClientSecret = Environment.GetEnvironmentVariable("NAVER_CLOVA_CLIENT_SECRET");
     private const string API_URL = "https://naveropenapi.apigw.ntruss.com/recog/v1/stt?lang=Kor";
     private AudioClip recordedClip;
 
-    public Action<string, AudioClip> onSttResult;//onSttresult += MyMthod
+    public Action<string, AudioClip> onSttResult;
 
     [Header("Waveform Settings")]
     private float amplitudeSize = 15f;
@@ -124,9 +124,15 @@ public class RecordManager : MonoBehaviour
 
     private IEnumerator SendSpeechRecognitionRequest(byte[] audioData)
     {
+        if (string.IsNullOrWhiteSpace(ClientId) || string.IsNullOrWhiteSpace(ClientSecret))
+        {
+            Debug.LogError("NAVER CLOVA credentials are not configured.");
+            yield break;
+        }
+
         using UnityWebRequest request = new UnityWebRequest(API_URL, "POST");
-        request.SetRequestHeader("X-NCP-APIGW-API-KEY-ID", CLIENT_ID);
-        request.SetRequestHeader("X-NCP-APIGW-API-KEY", CLIENT_SECRET);
+        request.SetRequestHeader("X-NCP-APIGW-API-KEY-ID", ClientId);
+        request.SetRequestHeader("X-NCP-APIGW-API-KEY", ClientSecret);
         request.SetRequestHeader("Content-Type", "application/octet-stream");
         request.uploadHandler = new UploadHandlerRaw(audioData);
         request.downloadHandler = new DownloadHandlerBuffer();
@@ -137,12 +143,12 @@ public class RecordManager : MonoBehaviour
         {
             Debug.Log("STT 성공: " + request.downloadHandler.text);
 
-            // {"text":"와 "} 제거
+
             sttResult = request.downloadHandler.text
                 .Replace("{\"text\":\"", "")
                 .Replace("\"}", "");
 
-            // 결과 전달
+
         }
         else
         {
@@ -154,8 +160,8 @@ public class RecordManager : MonoBehaviour
         SoundManager.instance.TurnOnBGM();
         stopFlag = true;
 
-        // 현재까지의 녹음 데이터를 자르기
-        int micPosition = Microphone.GetPosition(null); // 현재 마이크 위치
+
+        int micPosition = Microphone.GetPosition(null);
         if (micPosition > 0 && recordedClip != null)
         {
             recordedClip = TrimAudioClip(recordedClip, micPosition);
@@ -167,11 +173,11 @@ public class RecordManager : MonoBehaviour
         int channels = clip.channels;
         int sampleRate = clip.frequency;
 
-        // 샘플 데이터를 가져오기
+
         float[] samples = new float[length * channels];
         clip.GetData(samples, 0);
 
-        // 새로운 AudioClip 생성
+
         AudioClip trimmedClip = AudioClip.Create(clip.name + "_Trimmed", length, channels, sampleRate, false);
         trimmedClip.SetData(samples, 0);
 

@@ -12,7 +12,7 @@ public class TitleManager : MonoBehaviour
     private void Start()
     {
         newGamePanel.SetActive(false);
-        existData = PlayerPrefs.GetInt("ExistData" ,0);//0은 로드할 수 있는 데이터가 없음, 1은 있음
+        existData = PlayerPrefs.GetInt("ExistData" ,0);
         if (existData == 0)
         {
             loadButton.enabled = false;
@@ -20,12 +20,12 @@ public class TitleManager : MonoBehaviour
     }
     public void OnNewGameButtonClick()
     {
-        if (existData == 0)//불러올 데이터가 없다면
+        if (existData == 0)
         {
             DataManager.instance.NewGame();
             SceneManager.LoadScene("Lobby");
         }
-        else//불러올 데이터가 있다면
+        else
         {
             newGamePanel.SetActive(true);
         }
