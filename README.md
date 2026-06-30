@@ -8,6 +8,8 @@
 
 플레이어가 직접 대사를 연기하며 NPC와 이야기를 이어가는 스토리텔링 시뮬레이션 게임입니다. 컴투스 글로벌 게임개발 공모전 `컴:온 2024` 출품작입니다.
 
+최종 업데이트: 2026-06-30
+
 ### 프로젝트 정보
 
 | 항목 | 내용 |
@@ -54,9 +56,21 @@ NAVER CLOVA 자격증명은 저장소에 포함하지 않습니다. 로컬 실�
 
 짧은 공모전 일정에서는 새로운 시스템을 많이 만드는 것보다 로비, 캐릭터, UI, 연출을 하나의 플레이 흐름으로 완성하는 일이 더 중요했습니다.
 
+### 브랜치 및 커밋 정리
+
+- 리팩터링 커밋은 `refactor` / `refactoring` 키워드로 구분했습니다.
+- STT/TTS 제외 범위를 README에 명시해 담당 구현과 프로젝트 기술을 분리했습니다.
+
+### 업데이트 계획
+
+- 공개 영상과 PDF 링크는 유지합니다.
+- 필요 시 로비와 UI 구현 항목을 추가 캡처로 보강합니다.
+
 ## English
 
 Tell The Story is a storytelling simulation where the player performs dialogue and continues scenes with NPCs. It was submitted to the Com2uS `COM:ON 2024` global game-development competition.
+
+Last updated: 2026-06-30
 
 ### Project
 
@@ -101,3 +115,13 @@ NAVER CLOVA credentials are not stored in the repository. Local runs require `NA
 ### Lessons
 
 The competition schedule made integration more valuable than feature count: the lobby, characters, UI, and presentation had to work as one complete player flow.
+
+### Branch and Commit Notes
+
+- Refactoring commits are grouped by the `refactor` / `refactoring` keywords.
+- The README separates my implementation from the project-level STT/TTS usage.
+
+### Update Plan
+
+- Keep the gameplay video and PDF links visible.
+- Add more lobby or UI captures if needed.
