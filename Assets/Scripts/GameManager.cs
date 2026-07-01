@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     public int currentNPC;
-    public int currentAct;//NPC와 Act는 게임 씬에서 들어갔을 때 어떤 데이터를 불러올지 결정한다.
+    public int currentAct;
     public int[] npcCurrentLine;
     public int[] npcCurrentRole;
     public int[] npcFinished;
@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
     }
     public float CompareTwoDialogue(string dialogue1, string dialogue2)
     {
-        // 1. 특수 문자 제거 및 공백으로 분리
+
         string[] words1 = Regex.Replace(dialogue1, @"[^가-힣a-zA-Z0-9\s]", "")
                                 .ToLower()
                                 .Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
                                 .ToLower()
                                 .Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-        // 2. 단어 리스트 생성
+
         HashSet<string> uniqueWords = new HashSet<string>(words1);
         int matchingCount = 0;
 
@@ -58,11 +58,11 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        // 3. 최대 단어 수 계산
-        int maxWordCount = Mathf.Max(words1.Length, words2.Length);
-        if (maxWordCount == 0) return 1.0f; // 둘 다 비어있다면 100% 일치
 
-        // 4. 일치도 계산
+        int maxWordCount = Mathf.Max(words1.Length, words2.Length);
+        if (maxWordCount == 0) return 1.0f;
+
+
         float similarity = (float)matchingCount / maxWordCount;
         Debug.Log("Similarity : " + similarity);
         return similarity;

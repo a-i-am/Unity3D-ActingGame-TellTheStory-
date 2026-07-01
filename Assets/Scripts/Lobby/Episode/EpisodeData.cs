@@ -7,15 +7,15 @@ public class EpisodeData : ScriptableObject
     [Serializable]
     public class Episode
     {
-        public string episodeTitle; // 에피소드 제목
+        public string episodeTitle;
         [TextArea]
-        public string summary; // 줄거리
+        public string summary;
     }
 
     [Serializable]
     public class StoryInfo
     {
-        public List<Episode> episodes = new List<Episode>(); // 에피소드 목록
+        public List<Episode> episodes = new List<Episode>();
     }
 
     public StoryInfo storyInfo = new StoryInfo();

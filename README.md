@@ -1,30 +1,58 @@
-플레이 영상 : https://youtu.be/nVsos3e-BUQ
+# Tell The Story
 
-- 게임 소개
-: 플레이어가 직접 대사를 발음하여 NPC와 함께 연기를 이어가고, 그 과정에서
-자신의 연기와 NPC들의 스토리를 확인하는 스토리텔링 시뮬레이션 게임입니다.
+[플레이 영상](https://youtu.be/nVsos3e-BUQ) | [프로젝트 PDF](docs/TellTheStory.pdf)
 
-- 개발 목적 : 컴투스 글로벌 게임개발 공모전 '컴:온' 2024 제출
-- 개발 기간 : 17일(2024.12.14 ~ 2024.12.30)
-- 참여 인원 : 프로그래밍 2인
+- 플레이어가 직접 대사를 선택하고 연기하며 NPC와 이야기를 만들어가는 스토리텔링 시뮬레이션 게임입니다. 
+- 컴투스 글로벌 게임개발 공모전 `컴:온 2024` 출품작입니다.
 
-:: 사용 기술 ::
-- 게임 엔진 : Unity 3D 
-- STT API :  NAVER CLOVA Speech
-- TTS 보이스 : 볼리(VOLI), 
-- 이미지 생성(타이틀 로고, 메인 게임 배경)  : OpenAI Dall-E in Chat-GPT, Microsoft Copilot(Edge Copilot)
---------------------------------------------------------------------------------------
+README 업데이트: 2026-07-01
 
-[첨부 이미지 원본 파일]
-[Tell The Story.pdf](https://github.com/user-attachments/files/25697028/Tell.The.Story.pdf)
+> 📷 **영상 및 이미지**
+> *(여기에 영상 또는 이미지 추가 예정)*
 
+### 프로젝트 정보
 
-[프로젝트 설명 자료]
-<img width="1701" height="945" alt="슬라이드1" src="https://github.com/user-attachments/assets/858b46a5-2666-4034-82e7-1bc20939a408" />
-<img width="1701" height="945" alt="슬라이드2" src="https://github.com/user-attachments/assets/21e17e8a-e7ee-4b92-9946-c180fcf599e3" />
-<img width="1701" height="945" alt="슬라이드3" src="https://github.com/user-attachments/assets/58fe8aac-946d-4108-bb95-a646396ed943" />
-<img width="1701" height="945" alt="슬라이드4" src="https://github.com/user-attachments/assets/631e3cfe-1b9f-492a-a2c7-10fcf3c5e6d2" />
-<img width="1701" height="945" alt="슬라이드5" src="https://github.com/user-attachments/assets/4f59c5c5-54d3-4668-9d30-20ca14d45a5c" />
-<img width="1701" height="945" alt="슬라이드6" src="https://github.com/user-attachments/assets/920aa635-e479-4c22-82a6-84cef9123e63" />
-<img width="1701" height="945" alt="슬라이드7" src="https://github.com/user-attachments/assets/0559dbeb-e05a-44bd-9e08-3408176de533" />
-<img width="1701" height="945" alt="슬라이드8" src="https://github.com/user-attachments/assets/82b503d7-0045-4295-a56c-33668b7193de" />
+| 항목 | 내용 |
+| --- | --- |
+| 개발 기간 | 2024-12-14 - 2024-12-30 |
+| 리팩터링 이력 | 1차: 2025-08-10 - 2025-08-11 |
+| 인원 | 프로그래머 2인 |
+| 엔진 | Unity 2022.3.28f1 |
+| 플랫폼 | Windows |
+
+### 기술 스택
+<p>
+  <img src="https://img.shields.io/badge/Unity-000000?style=flat-square&logo=unity&logoColor=white"/>
+  <img src="https://img.shields.io/badge/C%23-239120?style=flat-square&logo=c-sharp&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Cinemachine-000000?style=flat-square"/>
+  <img src="https://img.shields.io/badge/TextMesh Pro-000000?style=flat-square"/>
+</p>
+
+### API 연동 및 라이브러리
+- **NAVER CLOVA Speech API** 연동 (STT/TTS 음성 인식 및 합성)
+- **OpenAI DALL-E / Microsoft Copilot** 활용 메인 에셋 생성 연동
+
+### 프로젝트 구조
+```text
+(프로젝트 구조도 추가 예정)
+```
+
+### 플레이 및 조작 방법
+*(NPC 대화 상호작용 방식, 화면 조작 및 진행 방법 안내 작성 예정)*
+
+### 담당 작업
+
+- 로비 상호작용 FSM 및 NPC 대화 흐름 구성
+- UI 플로우 제어, 캐릭터 배치, 8방향 스프라이트 애니메이션
+- 3D 공간 내 2D 빌보드 캐릭터와 Cinemachine 카메라 연출
+- 프로젝트 전체 씬의 TMP 폰트를 버튼 하나로 일괄 교체하는 커스텀 에디터 툴 제작
+- 텍스트 연출, 캐릭터 비주얼, 밸런싱 기획 데이터 동기화
+
+### 보안 및 실행
+
+NAVER CLOVA 자격증명은 소스코드에 포함하지 않습니다. 로컬 환경 테스트 시 시스템 환경 변수에 `NAVER_CLOVA_CLIENT_ID`, `NAVER_CLOVA_CLIENT_SECRET`을 직접 등록하여 실행해야 합니다.
+
+### 업데이트 계획
+
+- 필요 시 로비 및 UI 추가 캡처 보강
+- 사용한 에셋 출처 표기 예정

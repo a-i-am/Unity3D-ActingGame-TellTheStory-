@@ -26,7 +26,7 @@ public class ScoreManager : MonoBehaviour
     {
         instance = this;
     }
-    
+
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void Init()
     {
@@ -78,7 +78,7 @@ public class ScoreManager : MonoBehaviour
         colorTemp.a = 1f;
         changingText.color = colorTemp;
 
-        float duration = 1f; // 알파값을 변경하는 데 걸리는 시간
+        float duration = 1f;
         float elapsedTime = 0f;
         yield return new WaitForSeconds(1f);
 
@@ -90,7 +90,7 @@ public class ScoreManager : MonoBehaviour
             yield return null;
         }
 
-        // 최종적으로 알파값이 0이 되도록 설정
+
         colorTemp.a = 0f;
         changingText.color = colorTemp;
 
@@ -100,24 +100,24 @@ public class ScoreManager : MonoBehaviour
     private IEnumerator GraduallyAscendScore(float from, float to)
     {
         float currentScore = from;
-        float stepTime = 0.03f; // 숫자가 한 번 바뀔 때 걸리는 시간
-        float stepAmount = 0.1f; // 점수 증가 단위
+        float stepTime = 0.03f;
+        float stepAmount = 0.1f;
 
         while (currentScore < to)
         {
             currentScore += stepAmount;
 
-            // 오버플로 방지
+
             if (currentScore > to)
             {
                 currentScore = to;
             }
 
-            scoreText.text = currentScore.ToString("F1"); // 소수점 한 자리까지 표시
+            scoreText.text = currentScore.ToString("F1");
             yield return new WaitForSeconds(stepTime);
         }
 
-        // 마지막 점수 확인 (오차 방지)
+
         scoreText.text = to.ToString("F1");
         graduallyAscendScore = null;
     }
@@ -126,14 +126,14 @@ public class ScoreManager : MonoBehaviour
     private IEnumerator GraduallyAscendProgressBar(float from, float to)
     {
         float currentFill = from;
-        float stepTime = 0.1f; // 업데이트 간격
-        float stepAmount = 0.01f; // fillAmount 증가 단위
+        float stepTime = 0.1f;
+        float stepAmount = 0.01f;
 
         while (currentFill < to)
         {
             currentFill += stepAmount;
 
-            // 오버플로 방지
+
             if (currentFill > to)
             {
                 currentFill = to;
@@ -143,7 +143,7 @@ public class ScoreManager : MonoBehaviour
             yield return new WaitForSeconds(stepTime);
         }
 
-        // 최종 값 보정
+
         progressBarFill.fillAmount = to;
         graduallyAscendScore = null;
     }

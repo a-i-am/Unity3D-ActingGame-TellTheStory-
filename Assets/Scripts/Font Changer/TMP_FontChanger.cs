@@ -9,15 +9,15 @@ using UnityEditor;
 
 
 
-/*
-https://bonnate.tistory.com/
 
-Insert the script into the game object
-insert the TMP font in the inspector
-and press the button to find and replace all components.
 
-It may work abnormally, so make sure to back up your scene before using it!!
-*/
+
+
+
+
+
+
+
 
 public class TMP_FontChanger : MonoBehaviour
 {
