@@ -24,7 +24,6 @@ README 업데이트: 2026-07-01
   <img src="https://img.shields.io/badge/Unity-000000?style=flat-square&logo=unity&logoColor=white"/>
   <img src="https://img.shields.io/badge/C%23-239120?style=flat-square&logo=c-sharp&logoColor=white"/>
   <img src="https://img.shields.io/badge/Cinemachine-000000?style=flat-square"/>
-  <img src="https://img.shields.io/badge/TextMesh Pro-000000?style=flat-square"/>
 </p>
 
 ### API 연동 및 라이브러리
